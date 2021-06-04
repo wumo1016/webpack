@@ -1,0 +1,24 @@
+{
+  "name": "webpack",
+  "version": "0.1.0",
+  "description": "-",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wumo1016/webpack.git"
+  },
+  "keywords": [],
+  "author": "wuyibo <760478279wyb@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wumo1016/webpack/issues"
+  },
+  "homepage": "https://github.com/wumo1016/webpack#readme",
+  "devDependencies": {
+    "webpack": "^5.38.1",
+    "webpack-cli": "^4.7.0"
+  }
+}

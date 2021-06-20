@@ -9,7 +9,15 @@
   - 如果没有配置文件
     - 默认入口文件为src/index.js
     - 默认输出 dist/main.js
-  - 配置文件 `webpack.config.js`
+  - 默认配置文件 `webpack.config.js`
+
+### entry
+
+### output
+
+### devServer
+  - 
+
 ### mode
   - 参数
     - `dvelopment`：开发模式 默认会开启一些开发插件(NamedChunksPlugin和NamedModulesPlugin)
@@ -40,16 +48,25 @@
       - 这样就可以在配置文件中拿到了
       - 设置mode `mode: process.env.NODE_ENV` 但是配置文件需要是导出对象写法
 
+
 ### module
   - rules(loader)
     - 因为webpack只能认识.js和.json文件 其他的不认识 这个时候就需要使用loader去解析
     - 根据匹配规则(test)使用对应的loader(use)
+    - loader
+      - raw-loader: 解析一些纯文本文件(txt等)
+      - css-loader: 处理@import和url
+      - style-loader: 将css转成js 给webpack用
+      - sass-loader: 
+      - dart-sass: 
+
 
 ### plugins
   - 可以用于执行范围更广的任务 如：打包优化、资源管理、注入环境变量
-  - html-webpack-plugin: 根据html模板生成hmtl 并插入脚本
-  - DefinePlugin: webpack内置插件 扩展全局变量(模块都能访问到 但配置文件中无法访问)
-    - 本质就是在编译的时候 进行一个字符串的替换
+  - plugins
+    - html-webpack-plugin: 根据html模板生成hmtl 并插入脚本
+    - webpack.DefinePlugin: webpack内置插件 扩展全局变量(模块都能访问到 但配置文件中无法访问)
+      - 本质就是在编译的时候 进行一个字符串的替换
 
 ## npm run build干了什么
   - 首先找package.json下的scripts下面的build这个key 对应的命令

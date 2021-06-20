@@ -38,7 +38,7 @@ module.exports = {
           'css-loader',
           'sass-loader' // css 预处理器
         ]
-      }
+      },
     ]
   },
   plugins: [

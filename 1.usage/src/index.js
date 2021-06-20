@@ -5,4 +5,5 @@
 // console.log(process.env.NODE_ENV);
 
 import './index.css';
-import './scss.scss';
+
+

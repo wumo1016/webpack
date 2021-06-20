@@ -1,8 +1,8 @@
 # webpack5.39.1
 
 ## 安装
-  - `npm i webpack webpack-cli -D`
-  - 如果想跑本地服务 需要安装`webpack-dev-server`
+  - `webpack webpack-cli -D` webpack基本插件
+  - `webpack-dev-server` 跑本地服务 需要安装
     - 启动命令为 `webpack serve`
 
 ## 配置
@@ -11,19 +11,45 @@
     - 默认输出 dist/main.js
   - 配置文件 `webpack.config.js`
 ### mode
-  - `dvelopment`：开发模式 默认会开启一些开发插件
-  - `production`：生产模式 默认会开启一些生产插件 (例如：压缩文件)
-  - `none`：什么都不做
-  - 如果没有配置mode 默认就是 production
-    - `webpack serve` 启动本地服务 (需要安装插件 @webpack-cli/serve webpack-dev-server)
-  - 通过命令行配置
-    - `webpack --env=development` 
-      - 这个篇配置的变量在模块内部和配置文件中都取不到
-      - 只有当配置文件导出一个函数 函数的第一个参数env中可以才可以拿到这个变量(布尔值)
-      - 如果想在模块中拿到这个变量(非配置文件) 需要使用插件 definePlugin
+  - 参数
+    - `dvelopment`：开发模式 默认会开启一些开发插件(NamedChunksPlugin和NamedModulesPlugin)
+    - `production`：生产模式 默认会开启一些生产插件 (例如：压缩文件)
+    - `none`：什么都不做
+    - 如果没有配置mode 默认就是 production
+  - 获取环境变量`process.env.NODE_ENV`
+    - 如果没有配置mode
+      - 在模块内访问都是`production`
+      - 配置文件是undefined
+    - 在命令行中指定(`webpack serve --mode=development`)
+      - 在模块内输出就是指定的值
+      - 配置文件是undefined
+    - 在配置文件中设置了mode
+      - 在模块内访问就是mode的值
+      - 如果同时在命令行中配置了 那就是命令行的优先级更高
+      - 配置文件是undefined
+    - 命令行加参数 `--env=development` // 传入什么对应的参数就是true
+      - 配置文件导出一个函数 函数的有两个参数(env, argv)
+      - 开发坏境：env = { WEBPACK_SERVE: true, development: true }
+      - 生产环境：env = { WEBPACK_BUNDLE: true, WEBPACK_BUILD: true }
+      - 可以通过env的值来动态设置mode 例如：`mode：env.production ? 'production' : 'development'`
+    - 命令行参数 `set NODE_ENV=production&webpack`
+      - windows写法 `set NODE_ENV=production&webpack`
+      - mac写法 `eport NODE_ENV=production&webpack`
+      - 通用写法 `cross-env NODE_ENV=production webpack`
+        - 需要安装模块 `cross-env`
+      - 这样就可以在配置文件中拿到了
+      - 设置mode `mode: process.env.NODE_ENV` 但是配置文件需要是导出对象写法
 
-### loader
-  - 因为webpack只能认识.js和.json文件 其他的不认识 这个时候就需要使用loader去解析
+### module
+  - rules(loader)
+    - 因为webpack只能认识.js和.json文件 其他的不认识 这个时候就需要使用loader去解析
+    - 根据匹配规则(test)使用对应的loader(use)
+
+### plugins
+  - 可以用于执行范围更广的任务 如：打包优化、资源管理、注入环境变量
+  - html-webpack-plugin: 根据html模板生成hmtl 并插入脚本
+  - DefinePlugin: webpack内置插件 扩展全局变量(模块都能访问到 但配置文件中无法访问)
+    - 本质就是在编译的时候 进行一个字符串的替换
 
 ## npm run build干了什么
   - 首先找package.json下的scripts下面的build这个key 对应的命令

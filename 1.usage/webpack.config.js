@@ -39,6 +39,31 @@ module.exports = {
           'sass-loader' // css 预处理器
         ]
       },
+      // {
+      //   test: /\.(jpg|png|svg|gif|bmp)$/,
+      //   use: [
+      //     {
+      //       loader: 'file-loader',
+      //       options: {
+      //         esModule: false, // require之后不用使用default取值
+      //         name: '[hash:10].[ext]' // 文件名 [hash:]取10位hash值 [ext]原来的扩展名
+      //       }
+      //     }
+      //   ]
+      // },
+      {
+        test: /\.(jpg|png|svg|gif|bmp)$/,
+        use: [
+          {
+            loader: 'url-loader', // 功能大于file-loader 比它多limit参数
+            options: {
+              esModule: false, // require之后不用使用default取值
+              name: '[hash:10].[ext]', // 文件名 [hash:]取10位hash值 [ext]原来的扩展名
+              limit: 10*1024 // 8k 小于8k就是转成base64字符串
+            }
+          }
+        ]
+      }
     ]
   },
   plugins: [

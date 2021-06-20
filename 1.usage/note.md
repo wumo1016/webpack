@@ -56,10 +56,12 @@
     - loader
       - raw-loader: 解析一些纯文本文件(txt等)
       - css-loader: 处理@import和url
-      - style-loader: 将css转成js 给webpack用
+      - style-loader: 将css转成js脚本 作用就是向页面中插入一个style标签
       - sass-loader: 
-      - dart-sass: 
-
+      - dart-sass: 解决报错 1安装node-sass 2npm install node-sass@npm:dart-sass
+      - file-loader: 解决css等文件中的引入图片路径问题
+      - url-loader: 当图片小于设置值时 会转换成base64编码 否则会使用file-loader进行拷贝
+      - html-loader: 
 
 ### plugins
   - 可以用于执行范围更广的任务 如：打包优化、资源管理、注入环境变量

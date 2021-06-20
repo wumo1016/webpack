@@ -3,3 +3,8 @@
 body{
   background: gray;
 }
+.logo{
+  width: 100px;
+  height: 100px;
+  background: url('../assets/test.jpg') no-repeat center / 100%;
+}

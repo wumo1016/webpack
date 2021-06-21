@@ -1,10 +1,17 @@
 @import url('./base.css');
 @import url('./index.scss');
-body{
+
+body {
   background: gray;
 }
-.logo{
+
+.logo {
   width: 100px;
   height: 100px;
   background: url('../assets/test.jpg') no-repeat center / 100%;
 }
+
+::placeholder {
+  color: red;
+}
+

@@ -1,6 +1,10 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const webpack = require('webpack')
+// 读取.env这个文件 并且将里面的key-value写入到process.env对象中
+require('dotenv').config({ path: '.env' })
+console.log(process.env.NODE_ENV2); // production2
+
 module.exports = {
   mode: process.env.NODE_ENV,
   entry: './src/index.js',
@@ -27,8 +31,12 @@ module.exports = {
         use: [ // 执行顺序是从后往前
           'style-loader', // 第一个返回的一定是js 因为它的结果需要给webpack用
           {
-            loader: 'css-loader'
+            loader: 'css-loader',
+            options: {
+              importLoaders: 1 // 默认是0 在引入别的css文件需要经过几个loader的处理
+            }
           },
+          'postcss-loader'
         ]
       },
       {

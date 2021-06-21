@@ -1,3 +1,10 @@
 body {
   padding: 0;
 }
+
+.postcss {
+  width: 200px;
+  height: 50px;
+  background: blue;
+  transform: rotate(50deg);
+}

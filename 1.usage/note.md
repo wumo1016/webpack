@@ -62,6 +62,8 @@
       - file-loader: 解决css等文件中的引入图片路径问题
       - url-loader: 当图片小于设置值时 会转换成base64编码 否则会使用file-loader进行拷贝
       - html-loader: 
+      - postcss-loader: 
+      - postcss-preset-env: css加前缀 兼容性处理
 
 ### plugins
   - 可以用于执行范围更广的任务 如：打包优化、资源管理、注入环境变量

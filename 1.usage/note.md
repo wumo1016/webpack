@@ -16,7 +16,6 @@
 ### output
 
 ### devServer
-  - 
 
 ### mode
   - 参数
@@ -62,8 +61,16 @@
       - file-loader: 解决css等文件中的引入图片路径问题
       - url-loader: 当图片小于设置值时 会转换成base64编码 否则会使用file-loader进行拷贝
       - html-loader: 
-      - postcss-loader: 
-      - postcss-preset-env: css加前缀 兼容性处理
+      - css兼容性
+        - postcss-loader: 
+        - postcss-preset-env: css加前缀 兼容性处理
+      - js兼容性
+        - babel-loader: 使用Babel转义js文件
+        - @babel/core: Babel核心包
+        - @babel/preset-env: 但@babel/core不知道转换哪些以及怎么转换 @babel/preset-env里面就是一些配置
+        - @babel/@babel/preset-reactReact: 插件的Babel预设
+        - @babel/plugin-proposal-decorators: 把类和对象装饰器编译成ES5
+        - @babel/plugin-proposal-class-properties: 转换静态类属性以及使用属性初始值化语法声明的属性
 
 ### plugins
   - 可以用于执行范围更广的任务 如：打包优化、资源管理、注入环境变量

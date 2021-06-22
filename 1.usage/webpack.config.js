@@ -7,6 +7,11 @@ console.log(process.env.NODE_ENV2); // production2
 
 module.exports = {
   mode: process.env.NODE_ENV,
+  // devtool: 'eval', // 使用eval包裹代码
+  devtool: 'source-map', // 产生.map文件 行映射+列映射+两个sourcemap(行列用于定位 比如报错信息)
+  // devtool: 'cheap-source-map', // 不包含列信息 也不包含loader的sourcemap 因为需要两步编译 源码=>es5代码=>编译后代码 这个sourcemap只包含es5代码=>编译后代码的
+  // devtool: 'cheap-module-source-map', // 行+两个sourcemap
+  // devtool: 'inline-source-map', // 直接将map信息内嵌到目标文件中
   entry: './src/index.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -22,6 +27,15 @@ module.exports = {
   },
   module: {
     rules: [
+      // {
+      //   test: /\.js$/,
+      //   loader: 'eslint-loader',
+      //   enforce: 'pre', // 对loader进行分类 pre normal inline post
+      //   options: {
+      //     fix: true // 自动修复
+      //   },
+      //   exclude: /node_modules/ // 排除
+      // },
       {
         test: /\.js$/,
         use: [
@@ -33,7 +47,7 @@ module.exports = {
               ],
               plugins: [
                 ["@babel/plugin-proposal-decorators", { legacy: true }],
-                ["@babel/plugin-proposal-class-properties", { loose: true }],
+                ["@babel/plugin-proposal-class-properties", { loose: false }],
               ]
             }
           }

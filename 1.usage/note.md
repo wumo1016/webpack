@@ -68,9 +68,13 @@
         - babel-loader: 使用Babel转义js文件
         - @babel/core: Babel核心包
         - @babel/preset-env: 但@babel/core不知道转换哪些以及怎么转换 @babel/preset-env里面就是一些配置
-        - @babel/@babel/preset-reactReact: 插件的Babel预设
+        - @babel/preset-react: 插件的Babel预设
         - @babel/plugin-proposal-decorators: 把类和对象装饰器编译成ES5
         - @babel/plugin-proposal-class-properties: 转换静态类属性以及使用属性初始值化语法声明的属性
+      - eslint代码校验
+        - eslint
+        - eslint-loader
+        - babel-eslint
 
 ### plugins
   - 可以用于执行范围更广的任务 如：打包优化、资源管理、注入环境变量

@@ -48,6 +48,28 @@
       - 设置mode `mode: process.env.NODE_ENV` 但是配置文件需要是导出对象写法
 
 
+
+
+
+### devtool
+  - 组合规则 [inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map
+    - source-map: 单独在外部生成完整的sourcemap文件 并且在目标文件里建立关联 能提示错误代码的准确原始位置
+    - inline-source-map: 以base64格式内联在打包后的文件中，内联构建速度更快,也能提示错误代码的准确原始位置
+    - hidden-source-map: 会在外部生成sourcemap文件,但是在目标文件里没有建立关联,不能提示错误代码的准确原始位置
+    - eval-source-map: 会为每一个模块生成一个单独的sourcemap文件进行内联，并使用eval执行
+    - nosources-source-map: 也会在外部生成sourcemap文件,能找到源始代码文件位置，但找不到源码位置
+    - cheap-source-map: 外部生成sourcemap文件,不包含列和loader的map
+    - cheap-module-source-map: 外部生成sourcemap文件,不包含列的信息但包含loader的map
+  - 最佳实践
+    - 开发: `devtool: cheap-source-map`
+    - 生产: `devtool: false`
+      - 使用插件 `new webpack.SourceMapDevToolPlugin`
+      - 使用插件 `new FileManagerPlugin`
+    - 线上: `devtool: hidden-source-map`
+      - 使用插件 `new FileManagerPlugin`
+      - 浏览器手动添加源码映射(Sources tab中) `Add source map`
+
+
 ### module
   - rules(loader)
     - 因为webpack只能认识.js和.json文件 其他的不认识 这个时候就需要使用loader去解析

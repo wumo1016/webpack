@@ -30,6 +30,12 @@ module.exports = {
     compress: true, // 是否启用压缩
     // publicPath: '/' // 自己优先 没有就用output的
   },
+  // watch: true, // webpack5中默认为true
+  watchOptions: {
+    ignore: /node_modules/, // 忽略监听
+    arrregateTimeout: 300, // 防抖
+    poll: 1000, // 轮询文件是否变化 每秒多少次
+  },
   module: {
     rules: [
       // {

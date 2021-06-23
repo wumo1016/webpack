@@ -1,8 +1,8 @@
 # webpack5.39.1
 
 ## 安装
-  - `webpack webpack-cli -D` webpack基本插件
-  - `webpack-dev-server` 跑本地服务 需要安装
+  - `webpack webpack-cli` webpack基本插件
+  - `webpack-dev-server` 跑本地服务
     - 启动命令为 `webpack serve`
 
 ## 配置
@@ -53,6 +53,7 @@
 
 ### devtool
   - 组合规则 [inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map
+    - false 不生成sourcemap文件 也不建立关联
     - source-map: 单独在外部生成完整的sourcemap文件 并且在目标文件里建立关联 能提示错误代码的准确原始位置
     - inline-source-map: 以base64格式内联在打包后的文件中，内联构建速度更快,也能提示错误代码的准确原始位置
     - hidden-source-map: 会在外部生成sourcemap文件,但是在目标文件里没有建立关联,不能提示错误代码的准确原始位置
@@ -68,6 +69,7 @@
     - 线上: `devtool: hidden-source-map`
       - 使用插件 `new FileManagerPlugin`
       - 浏览器手动添加源码映射(Sources tab中) `Add source map`
+
 
 
 ### module
@@ -98,12 +100,26 @@
         - eslint-loader
         - babel-eslint
 
+
+
+
+
+
+
+
+
+
+### externals
+  - 第三方包 引入cdn 在模块中引入将不再打包
+
 ### plugins
   - 可以用于执行范围更广的任务 如：打包优化、资源管理、注入环境变量
   - plugins
     - html-webpack-plugin: 根据html模板生成hmtl 并插入脚本
     - webpack.DefinePlugin: webpack内置插件 扩展全局变量(模块都能访问到 但配置文件中无法访问)
       - 本质就是在编译的时候 进行一个字符串的替换
+    - webpack.ProvidePlugin: 注入全局变量
+    - html-webpack-externals-plugin: 与html-webpack-plugin配合使用
 
 ## npm run build干了什么
   - 首先找package.json下的scripts下面的build这个key 对应的命令

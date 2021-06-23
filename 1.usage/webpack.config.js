@@ -1,9 +1,10 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const webpack = require('webpack')
+const HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin')
 // 读取.env这个文件 并且将里面的key-value写入到process.env对象中
 require('dotenv').config({ path: '.env' })
-console.log(process.env.NODE_ENV2); // production2
+// console.log(process.env.NODE_ENV2); // production2
 
 module.exports = {
   mode: process.env.NODE_ENV,
@@ -12,12 +13,16 @@ module.exports = {
   // devtool: 'cheap-source-map', // 不包含列信息 也不包含loader的sourcemap 因为需要两步编译 源码=>es5代码=>编译后代码 这个sourcemap只包含es5代码=>编译后代码的
   // devtool: 'cheap-module-source-map', // 行+两个sourcemap
   // devtool: 'inline-source-map', // 直接将map信息内嵌到目标文件中
+  devtool: false,
   entry: './src/index.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].js',
     // publicPath: '/test' // 打包后文件的前缀
   },
+  // externals: { // 外部依赖 
+  //   jquery: 'jQuery' // 模块名: 全局变量 当再引入jquery的时候 将不再打包
+  // },
   devServer: {
     port: 8080,
     // open: true, // 是否打开浏览器
@@ -27,6 +32,17 @@ module.exports = {
   },
   module: {
     rules: [
+      // {
+      //   // test: require.resolve('lodash'),
+      //   test: /lodash/,
+      //   loader: 'expose-loader',
+      //   options: {
+      //     exposes: { // 向全局对象上也就是window._ 如果原来有就覆盖
+      //       globalName: '_',
+      //       override: true
+      //     }
+      //   }
+      // },
       // {
       //   test: /\.js$/,
       //   loader: 'eslint-loader',
@@ -109,10 +125,19 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './src/index.html'
     }),
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV2': JSON.stringify('development'), // 'development' 会被当成一个变量 可以直接写成 "'production'"
-      'NODE_ENV2': JSON.stringify('development')
-    }),
+    // new HtmlWebpackExternalsPlugin({
+    //   externals: [
+    //     {
+    //       module: 'jquery', // 模块名
+    //       entry: 'https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js',
+    //       global: 'jQuery', // 变量
+    //     },
+    //   ],
+    // }),
+    // new webpack.DefinePlugin({
+    //   'process.env.NODE_ENV2': JSON.stringify('development'), // 'development' 会被当成一个变量 可以直接写成 "'production'"
+    //   'NODE_ENV2': JSON.stringify('development')
+    // }),
     // source-map 生产环境最佳实践
     // new webpack.SourceMapDevToolPlugin({
     //   filename: '[file].map',
@@ -130,6 +155,9 @@ module.exports = {
     //       delete: ['./dist/*map']
     //     }
     //   }
+    // }),
+    // new webpack.ProvidePlugin({
+    //   _: 'lodash' // 相当于 let _ = require('lodash') 然后全局(模块内)注入_
     // })
   ]
 }

@@ -29,4 +29,9 @@ console.log(p1.name);
 import ReactDom from 'react-dom'
 ReactDom.render('hello', document.querySelector('.root')) */
 
-let a = 1
+/* import _ from 'lodash'
+console.log(_.join(['a', 'b'], '&')); */
+
+// import jQuery from 'jquery'
+// console.log(jQuery);
+

@@ -5,10 +5,10 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "[name].js",
-    globalObject: "self",
+    globalObject: "this",
     library: {
       name: "MyLibrary",
-      type: "this",
+      type: "commonjs2",
     },
   },
 };

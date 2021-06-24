@@ -1,1 +1,3 @@
-console.log('index');
+module.exports = {
+  name: 123
+}

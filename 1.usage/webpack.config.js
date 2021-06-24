@@ -1,13 +1,14 @@
-const path = require('path')
+const path = require("path");
 module.exports = {
-  mode: process.env.NODE_ENV === 'development' ? 'development' : 'production',
-  entry: () => {
-    return new Promise((r, j) => {
-      r('./src/index.js')
-    })
-  },
+  mode: process.env.NODE_ENV === "development" ? "development" : "production",
+  entry: "./src/index.js",
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: '[name].js'
-  }
-}
+    path: path.resolve(__dirname, "dist"),
+    filename: "[name].js",
+    globalObject: "self",
+    library: {
+      name: "MyLibrary",
+      type: "this",
+    },
+  },
+};

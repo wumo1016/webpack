@@ -1,6 +1,7 @@
 ## webpack
 
 - output
+
   - path: 输出文件的目录 应该为绝对路径
   - filename: 每个输出文件的名称
     - 静态名称: `filename: 'bundle.js'`
@@ -45,6 +46,40 @@
         };
         ```
       - commonjs2: 同上 导出值将赋值给 module.exports 对象(module.exports.MyLibrary = returnValue)
-      - amd: 输出一个amd模块 但是必须引入相关的库才能使用 例如: RequireJS
-      - amd-require: 使用一个立即执行的amd模块输出 不能定义 `library.name`
+      - amd: 输出一个 amd 模块 但是必须引入相关的库才能使用 例如: RequireJS
+      - amd-require: 使用一个立即执行的 amd 模块输出 不能定义 `library.name`
       - umd: 通用模块定义(amd&commonjs&commonjs2)
+
+- devServer
+  - port: 设置启动端口
+  - before: 一个 devServer 所有中间之前执行之前的自定义函数
+    ```javascript
+    {
+      before: (app, server, compiler) => {
+        app.get("/before", function (req, res) {
+          res.json({ data: "请求成功" });
+        });
+      };
+    }
+    ```
+  - after: 一个 devServer 所有中间之前执行之后的自定义函数
+    ```javascript
+    {
+      after: (app, server, compiler) => {
+        app.get("/after", function (req, res) {
+          res.json({ data: "请求/after成功" });
+        });
+      };
+    }
+    ```
+  - contentBase: 静态文件的来源目录
+    - 字符串格式: `contentBase: path.resolve(__dirname, 'public')`
+    - 数组格式:
+      ```javascript
+      {
+        contentBase: [
+          path.resolve(__dirname, "public"),
+          path.resolve(__dirname, "assets"),
+        ];
+      }
+      ```

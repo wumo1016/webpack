@@ -10,4 +10,7 @@ module.exports = {
       type: "umd",
     },
   },
+  devServer: {
+    port: 8080,
+  },
 };

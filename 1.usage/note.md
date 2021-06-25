@@ -47,3 +47,4 @@
       - commonjs2: 同上 导出值将赋值给 module.exports 对象(module.exports.MyLibrary = returnValue)
       - amd: 输出一个amd模块 但是必须引入相关的库才能使用 例如: RequireJS
       - amd-require: 使用一个立即执行的amd模块输出 不能定义 `library.name`
+      - umd: 通用模块定义(amd&commonjs&commonjs2)

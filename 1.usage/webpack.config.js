@@ -5,10 +5,9 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "[name].js",
-    globalObject: "this",
     library: {
       name: "MyLibrary",
-      type: "commonjs2",
+      type: "umd",
     },
   },
 };

@@ -163,4 +163,6 @@
         - 可选值: `https://webpack.docschina.org/configuration/module/#ruletype`
         - 它用于默认规则和默认行为发生 比如想通过自定义loader加载一个json文件 就需要将type设置为`javascript/auto`以绕过webpack内置的导入
       - resolve: 会与顶级的resolve进行合并 并覆盖
-      
+
+- devtool
+  - 可选值 `[inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map`  

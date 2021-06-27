@@ -11,6 +11,14 @@ module.exports = {
   devServer: {
     port: 8080,
   },
+  module: {
+    rules: [
+      {
+        test: /\.txt$/,
+        loader: "raw-loader"
+      },
+    ],
+  },
   plugins: [
     new HtmlWebpackPlugin({
       template: "./public/index.html",

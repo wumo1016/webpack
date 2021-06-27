@@ -1,3 +1,1 @@
-module.exports = {
-  name: 12345
-}
+console.log(123);

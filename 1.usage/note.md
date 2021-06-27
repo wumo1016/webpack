@@ -1,7 +1,6 @@
 ## webpack
 
 - output
-
   - path: 输出文件的目录 应该为绝对路径
   - filename: 每个输出文件的名称
     - 静态名称: `filename: 'bundle.js'`
@@ -96,3 +95,6 @@
     },
   };
   ```
+
+- plugins
+  - html-wabpack-plugin: 

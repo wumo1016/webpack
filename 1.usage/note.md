@@ -83,3 +83,16 @@
         ];
       }
       ```
+  - open: 是否打开浏览器
+  - proxy：代理
+  ```javascript
+   {
+    devServer: {
+    proxy: {
+      '/api': {
+        target: 'https://example.com',
+      },
+    },
+    },
+  };
+  ```

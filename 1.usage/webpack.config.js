@@ -17,6 +17,14 @@ module.exports = {
         test: /\.txt$/,
         loader: "raw-loader"
       },
+      {
+        test: /\.css$/,
+        use: [
+          'style-loader',
+          'css-loader',
+          'postcss-loader'
+        ]
+      }
     ],
   },
   plugins: [

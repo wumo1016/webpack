@@ -40,7 +40,8 @@ module.exports = {
             options: {
               esModule: false, // require之后不用使用default取值
               name: '[hash:10].[ext]', // 文件名 [hash:]取10位hash值 [ext]原来的扩展名
-              limit: 10 * 1024 // 8k 小于8k就是转成base64字符串
+              limit: 10 * 1024, // 8k 小于8k就是转成base64字符串
+              outputPath: 'img/' // 图片输出路径
             }
           }
         ]

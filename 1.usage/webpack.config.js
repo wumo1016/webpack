@@ -66,7 +66,14 @@ module.exports = {
             }
           }
         ]
-      }
+      },
+      {
+        test: /\.jsx?$/,
+        loader: 'eslint-loader',
+        enforce: 'pre',
+        options: { fix: true },
+        exclude: /node_modules/
+      },
     ],
   },
   plugins: [

@@ -1,3 +1,6 @@
-import './index.scss'
-console.log(1)
-
+class Person {
+  constructor(){
+    console.log(1234);
+  }
+}
+const p = new Person()

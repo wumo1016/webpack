@@ -3,7 +3,9 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
   mode: process.env.NODE_ENV === "development" ? "development" : "production",
-  entry: "./src/index.js",
+  entry: {
+    index: "./src/index.js"
+  },
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "[name].js",
@@ -42,6 +44,25 @@ module.exports = {
               name: '[hash:10].[ext]', // 文件名 [hash:]取10位hash值 [ext]原来的扩展名
               limit: 10 * 1024, // 8k 小于8k就是转成base64字符串
               outputPath: 'img/' // 图片输出路径
+            }
+          }
+        ]
+      },
+      {
+        test: /\.jsx?$/,
+        use: [
+          { // 需安装包 babel-loader @babel/core @babel/preset-env
+            loader: 'babel-loader',
+            options: {
+              presets: [
+                [
+                  '@babel/preset-env',
+                  {
+                    targets: '>0.25%, not dead'
+                  }
+                ]
+              ],
+              plugins: []
             }
           }
         ]

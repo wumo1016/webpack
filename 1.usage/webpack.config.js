@@ -17,12 +17,11 @@ module.exports = {
         test: /\.txt$/,
         loader: "raw-loader"
       },
-      {
+      { // 需要安装包 style-loader css-loader
         test: /\.css$/,
         use: [
-          'style-loader',
-          'css-loader',
-          'postcss-loader'
+          'style-loader', // 可以将css插入到dom中
+          'css-loader', // 处理 @import和url()
         ]
       }
     ],

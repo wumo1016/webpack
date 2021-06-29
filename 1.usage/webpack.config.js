@@ -1,5 +1,8 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack')
+
+const resolve = paths => path.resolve(__dirname, paths)
 
 module.exports = {
   mode: process.env.NODE_ENV === 'development' ? 'development' : 'production',
@@ -7,11 +10,17 @@ module.exports = {
     index: './src/index.js'
   },
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: resolve('dist'),
     filename: '[name].js',
   },
   devServer: {
     port: 8080,
+  },
+  resolve: {
+    alias: {
+      '@': resolve('./src'),
+      '@ass': resolve('./src/assets'),
+    }
   },
   module: {
     rules: [
@@ -81,7 +90,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './public/index.html',
-    }),
+      template: resolve('./public/index.html'),
+    })
   ],
 };

@@ -1,6 +1,7 @@
 ## webpack
 
 - output
+
   - path: 输出文件的目录 应该为绝对路径
   - filename: 每个输出文件的名称
     - 字符串
@@ -51,6 +52,7 @@
       - 'umd': 通用模块定义(amd&commonjs&commonjs2)
 
 - devServer
+
   - port: 设置启动端口 number
   - before: 一个 devServer 所有中间之前执行之前的自定义函数
     ```javascript
@@ -95,9 +97,10 @@
       },
       },
     };
-  ```
+    ```
 
 - module
+
   - rules: 能够对模块应用 loader
     - 条件(有两种值)
       - resource(资源文件的绝对路径)
@@ -109,7 +112,7 @@
         - issure: 用来与被发出的 request 对应的模块项匹配
       - 所有可用值
         - 字符串: 匹配输入必须以提供的字符串开始 目录绝对路径或文件绝对路径
-        - 正则表达式: test输入值
+        - 正则表达式: test 输入值
         - 函数: 调用输入的函数 必须返回一个真值以匹配
         - 条件数组: 至少匹配一个条件
         - 对象: 匹配所有属性 每个属性都有一个定义行为
@@ -117,11 +120,11 @@
           - { or: [condition] } 必须匹配数组中的任何一个条件
           - { not: [condition] } 必须排除条件
     - 结果(只在规则匹配时使用 有两种值)
-      - 应用的loader(应用在 resource 上的 loader 数组)
+      - 应用的 loader(应用在 resource 上的 loader 数组)
         - loader: 是 `use: [{ loader }]` 的简写
         - options: 是 `use: [{ options }]` 的简写
         - use: 使用模块的数组 或者 函数
-          - 可以直接写loader字符串 可以写成对象格式
+          - 可以直接写 loader 字符串 可以写成对象格式
         - enforce: 指定 loader 的种类 没有则表示普通 loader
           - 可能的值
             - 'pre': 前置 loader
@@ -140,7 +143,7 @@
             import { c } from "!!./file3.js";
             ```
       - parse 选项(用于为模块创建解析器的选项对象)
-        - parser: 
+        - parser:
     - 嵌套规则(kjhk)
       - oneOf: 数组 当规则匹配时 只使用第一个匹配规则
         ```javascript
@@ -159,10 +162,19 @@
         }
         ```
     - 其他值
-      - type: 设置类型用于模块匹配 
+      - type: 设置类型用于模块匹配
         - 可选值: `https://webpack.docschina.org/configuration/module/#ruletype`
-        - 它用于默认规则和默认行为发生 比如想通过自定义loader加载一个json文件 就需要将type设置为`javascript/auto`以绕过webpack内置的导入
-      - resolve: 会与顶级的resolve进行合并 并覆盖
+        - 它用于默认规则和默认行为发生 比如想通过自定义 loader 加载一个 json 文件 就需要将 type 设置为`javascript/auto`以绕过 webpack 内置的导入
+      - resolve: 会与顶级的 resolve 进行合并 并覆盖
 
 - devtool
-  - 可选值 `[inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map`  
+
+  - 可选值 `[inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map`
+
+- resolve
+  - alias: 创建 import 或 require 的别名
+  ```javascript
+    alias: {
+      '@': resolve('./src')
+    }
+  ```

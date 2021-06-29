@@ -1,14 +1,14 @@
-const path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  mode: process.env.NODE_ENV === "development" ? "development" : "production",
+  mode: process.env.NODE_ENV === 'development' ? 'development' : 'production',
   entry: {
-    index: "./src/index.js"
+    index: './src/index.js'
   },
   output: {
-    path: path.resolve(__dirname, "dist"),
-    filename: "[name].js",
+    path: path.resolve(__dirname, 'dist'),
+    filename: '[name].js',
   },
   devServer: {
     port: 8080,
@@ -17,7 +17,7 @@ module.exports = {
     rules: [
       {
         test: /\.txt$/,
-        loader: "raw-loader"
+        loader: 'raw-loader'
       },
       {
         test: /\.css$/,
@@ -62,8 +62,12 @@ module.exports = {
                   }
                 ]
               ],
-              plugins: []
-            }
+              plugins: [
+                ['@babel/plugin-proposal-decorators', { legacy: true }],
+                ['@babel/plugin-proposal-class-properties', { loose: true }],
+                ['@babel/plugin-proposal-private-methods', { loose: true }],
+              ]
+            },
           }
         ]
       },
@@ -71,14 +75,13 @@ module.exports = {
         test: /\.jsx?$/,
         loader: 'eslint-loader',
         enforce: 'pre',
-        options: { fix: true },
         exclude: /node_modules/
       },
     ],
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: "./public/index.html",
+      template: './public/index.html',
     }),
   ],
 };

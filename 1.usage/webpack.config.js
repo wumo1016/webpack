@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+// const HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin')
 const webpack = require('webpack')
 
 const resolve = paths => path.resolve(__dirname, paths)
@@ -91,6 +92,6 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: resolve('./public/index.html'),
-    })
+    }),
   ],
 };

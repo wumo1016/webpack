@@ -1,6 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-// const HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 const webpack = require('webpack')
 
 const resolve = paths => path.resolve(__dirname, paths)
@@ -93,5 +93,13 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: resolve('./public/index.html'),
     }),
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: resolve('./src/static'),
+          to: resolve('./dist/static')
+        }
+      ]
+    })
   ],
 };

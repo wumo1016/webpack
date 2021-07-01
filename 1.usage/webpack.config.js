@@ -2,6 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const webpack = require('webpack')
 
 const resolve = paths => path.resolve(__dirname, paths)
@@ -33,14 +34,14 @@ module.exports = {
       {
         test: /\.css$/,
         use: [
-          'style-loader', // 可以将css插入到dom中
-          'css-loader', // 处理 @import和url()
+          MiniCssExtractPlugin.loader,
+          'css-loader',
         ]
       },
       {
         test: /\.(scss|sass)$/,
         use: [
-          'style-loader',
+          MiniCssExtractPlugin.loader,
           'css-loader',
           'sass-loader'
         ]
@@ -49,12 +50,12 @@ module.exports = {
         test: /\.(jpg|png|jpeg|gif|svg)/,
         use: [
           {
-            loader: 'url-loader', // 功能大于file-loader 比它多limit参数
+            loader: 'url-loader',
             options: {
-              esModule: false, // require之后不用使用default取值
-              name: '[hash:10].[ext]', // 文件名 [hash:]取10位hash值 [ext]原来的扩展名
-              limit: 10 * 1024, // 8k 小于8k就是转成base64字符串
-              outputPath: 'img/' // 图片输出路径
+              esModule: false,
+              name: '[hash:10].[ext]',
+              limit: 10 * 1024,
+              outputPath: 'static/images'
             }
           }
         ]
@@ -104,6 +105,9 @@ module.exports = {
     }),
     new CleanWebpackPlugin({
       cleanOnceBeforeBuildPatterns: ['**/*']
+    }),
+    new MiniCssExtractPlugin({
+      filename: 'static/css/[name].css'
     })
   ],
 };

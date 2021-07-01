@@ -178,3 +178,14 @@
       '@': resolve('./src')
     }
   ```
+
+- 各种占位符(hash)含义
+  - 文件指纹：是指文件打包输出后的文件名和后缀名
+  - hash一般会结合CDN缓存来使用
+    - ext: 资源后缀名
+    - name: 文件名称
+    - id: 内部chunk id
+    - hash: 每次webpack构建都会生成一个唯一的hash值
+    - chunkhash: 根据chunk生成的hash值 来源同一个chunk 则hash值就一样
+    - contenthash: 根据文件内容生成hash值 文件内容相同hash值就相同
+

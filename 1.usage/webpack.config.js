@@ -14,7 +14,7 @@ module.exports = {
   },
   output: {
     path: resolve('dist'),
-    filename: '[name].js',
+    filename: '[hash:10].js',
   },
   devServer: {
     port: 8080,
@@ -53,7 +53,7 @@ module.exports = {
             loader: 'url-loader',
             options: {
               esModule: false,
-              name: '[hash:10].[ext]',
+              name: '[name].[ext]',
               limit: 10 * 1024,
               outputPath: 'static/images'
             }
@@ -63,7 +63,7 @@ module.exports = {
       {
         test: /\.jsx?$/,
         use: [
-          { // 需安装包 babel-loader @babel/core @babel/preset-env
+          {
             loader: 'babel-loader',
             options: {
               presets: [
@@ -107,7 +107,7 @@ module.exports = {
       cleanOnceBeforeBuildPatterns: ['**/*']
     }),
     new MiniCssExtractPlugin({
-      filename: 'static/css/[name].css'
+      filename: 'static/css/[hash:10].css'
     })
   ],
 };

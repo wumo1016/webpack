@@ -1,4 +1,6 @@
-module.exports = {
-  title: 'title',
-  age: 'age',
+// title.js
+module.exports =  {
+  name: 'wyb',
+  age: '18',
 }
+

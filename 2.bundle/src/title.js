@@ -1,6 +1,6 @@
 // title.js
 module.exports =  {
   name: 'wyb',
-  age: '18',
+  age: 18
 }
 

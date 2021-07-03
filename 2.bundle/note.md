@@ -23,13 +23,13 @@
     // title.js
     module.exports = {
       title: "wyb",
-      age: "18",
+      age: 18,
     };
     // index.js
     const res = require("./title");
     console.log(res);
     // 输出结果
-    {title: "wyb", age: "18"}
+    {title: "wyb", age: 18}
     ```
 
   - esmodule => commonjs: es 的默认导出定义在 module.exports.default 上 其他属性对应的定义在 module.exports 对象上 并且设置 exports.\_esModule=true exports.toString=Module

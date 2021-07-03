@@ -1,5 +1,5 @@
 // title.js
-export default {
-  name: 'wyb'
+module.exports = {
+  name: 'wyb',
+  age: 18
 }
-export const age = 18

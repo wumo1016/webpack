@@ -2,8 +2,8 @@
 var modules = {
   './src/index.js': (module, exports, require) => {
     module.exports = {
-      title: 'title',
-      age: 'age',
+      name: 'wyb',
+      age: 18,
     }
   }
 }
@@ -25,11 +25,14 @@ require.d = (exports, definiton) => {
   }
 }
 
-require.r = (exports) => {
-  Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' })
-  Object.defineProperty(exports, '_esModule', { value: true })
+require.n = module => {
+  var getter = module && module.__esModule ?
+    () => (module.default) :
+    () => (module)
+  require.d(getter, { a: getter })
+  return getter
 }
 
 let _title_ = require('./src/index.js')
-console.log(_title_.title);
-console.log(_title_.age);
+let _title_default = require.n(_title_)
+console.log(_title_default(), _title_.age);

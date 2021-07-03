@@ -15,7 +15,7 @@
 
 ## 模块间的转化
 
-- 定义一个 require 函数(定义一个 module ={ exports: {} }) 执行 require 函数 传入(module,exports,require) 返回 module.exports
+- 定义一个 require 函数定义一个 `module ={ exports: {} }` 执行 require 函数 传入(module,exports,require) 返回 module.exports
 
   - commonjs => commonjs: 直接 module.exports 等于导入的值
 
@@ -32,7 +32,8 @@
     {title: "wyb", age: 18}
     ```
 
-  - esmodule => commonjs: es的默认导出定义在exports.default属性上 其他的导出对应的定义在exports对象上 并且设置 exports.__esModule=true
+  - esmodule => commonjs: es 的默认导出定义在 exports.default 属性上 其他的导出对应的定义在 exports 对象上 并且设置 `exports.__esModule=true`
+
     ```javascript
       // title.js
       export default {
@@ -51,4 +52,21 @@
         Symbol(Symbol.toStringTag): "Module",
         __esModule: true
       }
+    ```
+
+  - esmodule => esmodule: 在处理导入上一致 只不过如果以es方式导入的话 如果的导入是默认值 会直接返回export.default
+    ```javascript
+    // title.js
+    export default {
+      name: "wyb",
+    };
+    export const age = 18;
+    // index.js
+    import res, { age } from "./title";
+    console.log(res, age);
+    // 输出结果
+    {
+      name: "wyb";
+    }
+    18;
     ```

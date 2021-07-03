@@ -1,3 +1,3 @@
 // index.js
-const res = require('./title')
-console.log(res);
+import res, { age } from "./title";
+console.log(res, age);

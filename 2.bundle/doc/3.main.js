@@ -3,8 +3,8 @@ var modules = {
   './src/index.js': (module, exports, require) => {
     require.r(exports)
     require.d(exports, {
-      'default': () => ('title'),
-      'age': () => ('age')
+      'default': () => ({ name: 'wyb' }),
+      'age': () => (18)
     })
   }
 }
@@ -32,5 +32,4 @@ require.r = (exports) => {
 }
 
 let _title_ = require('./src/index.js')
-console.log(_title_.default);
-console.log(_title_.age);
+console.log(_title_.default, _title_.age);

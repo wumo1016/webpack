@@ -1,3 +1,3 @@
-import title, { age } from './title'
+import { title, age } from './title'
 console.log(title);
 console.log(age);

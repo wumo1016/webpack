@@ -1,2 +1,4 @@
-export default 'title'
-export const age = 'age'
+module.exports = {
+  title: 'title',
+  age: 'age',
+}

@@ -13,6 +13,3 @@
   console.log(Object.prototype.toString.call(obj2)); // [object obj2]
   ```
 
-### 打包文件
-  - commonjs 加载 commonjs
-  - commonjs 加载 esmodule

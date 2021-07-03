@@ -3,8 +3,8 @@ var modules = {
   './src/index.js': (module, exports, require) => {
     require.r(exports)
     require.d(exports, {
-      'default': () => ('title'),
-      'age': () => ('age')
+      'default': () => ({ name: 'wyb' }),
+      'age': () => (18)
     })
   }
 }
@@ -28,8 +28,8 @@ require.d = (exports, definiton) => {
 
 require.r = (exports) => {
   Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' })
-  Object.defineProperty(exports, '_esModule', { value: true })
+  Object.defineProperty(exports, '__esModule', { value: true })
 }
 
-let title = require('./src/index.js')
-console.log(title);
+const res = require('./src/index.js')
+console.log(res);

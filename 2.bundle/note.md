@@ -86,3 +86,21 @@
     // 输出结果
     {name: "wyb", age: 18} 18
     ```
+
+## 异步导入
+
+```javascript
+require
+  .e("title")
+  .then(require.t.bind(require, "./src/title.js", 23))
+  .then((res) => {
+    console.log(res);
+  });
+// 第一步: 通过jsonp加载代码块title title就是定义的webpackChunkName 取回来之后将模块定义合并到module对象上
+require.e("title");
+// 第二步: 通过require去加载title的模块定义 加载完后就传递值
+require.t.bind(require, "./src/title.js", 23)
+```
+  - 1.通过jsonp加载文件 返回一个promise 然后放进promises 然后返回一个Promise.all(promises)
+  - 2.执行被加载的文件的代码的时候 会执行一个回调 回调中会通过moduleId找到对应的promise 并将文件中的到处值合并到modules上 然后执行resolve
+  - 3.执行require函数 处理返回值

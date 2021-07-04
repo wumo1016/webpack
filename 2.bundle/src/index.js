@@ -1,3 +1,3 @@
-// index.js
-import res, { age } from "./title";
-console.log(res, age);
+import(/* webpackChunkName: 'title' */ './title').then(res => {
+  console.log(res);
+})

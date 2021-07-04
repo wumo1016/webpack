@@ -87,7 +87,7 @@
     {name: "wyb", age: 18} 18
     ```
 
-## 异步导入
+## 懒加载
 
 ```javascript
 require

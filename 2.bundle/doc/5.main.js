@@ -33,15 +33,17 @@ require.e = (chunkId) => {
 
 // 添加jsonp方法
 require.f.j = (chunkId, promises) => {
-  let installChunkData
-  let promise = new Promise((resolve, reject) => {
-    installChunkData = installedChunks[chunkId] = [resolve, reject]
-  })
-  installChunkData[2] = promise
-  promises.push(promise)
+  let installChunkData = Object.prototype.hasOwnProperty.call(installedChunks, chunkId) ? installedChunks[chunkId] : undefined
+  if (installChunkData !== 0) {
+    let promise = new Promise((resolve, reject) => {
+      installChunkData = installedChunks[chunkId] = [resolve, reject]
+    })
+    installChunkData[2] = promise
+    promises.push(promise)
 
-  let url = `${chunkId}.js`
-  require.l(url)
+    let url = `${chunkId}.js`
+    require.l(url)
+  }
 }
 // 加载脚本
 require.l = url => {

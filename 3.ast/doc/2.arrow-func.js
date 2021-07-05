@@ -1,6 +1,6 @@
 const babelCore = require('@babel/core')
-const types = require('babel-types')
 const ArrowFunction = require('babel-plugin-transform-es2015-arrow-functions')
+const types = require('babel-types')
 
 let sourceCode = `
 const sum = (a, b) => {

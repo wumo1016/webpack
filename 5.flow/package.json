@@ -1,10 +1,9 @@
 {
-  "name": "4.debug",
+  "name": "5.flow",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "devtool": "node --inspect-brk ./node_modules/webpack-cli/bin/cli.js"
   },
   "keywords": [],
   "author": "",

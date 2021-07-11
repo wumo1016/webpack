@@ -14,6 +14,9 @@ module.exports = {
     path: resolve('dist'),
     filename: '[name].js'
   },
+  resolve: {
+    extensions: ['.js', '.jsx', '.json']
+  },
   plugins: [
     new HtmlWebpackPlugin({
       template: resolve('./src/index.html'),

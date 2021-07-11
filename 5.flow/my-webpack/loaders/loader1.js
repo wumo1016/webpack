@@ -1,5 +1,5 @@
 function loader1(source) {
-  return source + '/loader1'
+  return source
 }
 
 module.exports = loader1

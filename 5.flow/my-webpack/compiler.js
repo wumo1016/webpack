@@ -11,7 +11,7 @@ class Compiler {
       done: new SyncHook(), // 完成编译的时候触发
     }
   }
-  // 4.执行compiler的run方法开始编译
+  /* 4.执行compiler的run方法开始编译 */
   run(cb) {
     // 开始编译钩子
     this.hooks.run.call()

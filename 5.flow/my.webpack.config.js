@@ -7,13 +7,20 @@ const resolve = paths => path.resolve(__dirname, paths)
 module.exports = {
   mode: 'production',
   devtool: false,
-  entry: {
-    index: './src/index.js',
-    index2: './src/index2.js',
-  },
+  entry: './src/index.js',
   output: {
     path: resolve('dist'),
     filename: '[name].js'
+  },
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        use: [
+          path.resolve(__dirname, 'my-webpack/loaders/loader1.js')
+        ]
+      }
+    ]
   },
   plugins: [
     new RunPlugin(),

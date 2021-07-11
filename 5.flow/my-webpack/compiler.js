@@ -11,6 +11,11 @@ class Compiler {
   }
 
   run(cb) {
+    // 开始编译钩子
+    this.hooks.run.call()
+    // 中间是编译流程
+    // 编译结束钩子
+    this.hooks.done.call()
     cb(null, {
       toJson(options) {
         return {

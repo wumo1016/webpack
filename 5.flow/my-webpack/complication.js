@@ -83,7 +83,9 @@ class Complication {
           node.arguments = [
             types.stringLiteral(depMduleId)
           ]
-          module.dependencies.push(finalPath)
+          if (!this.modules.map(v => v.id).includes(depMduleId)) {
+            module.dependencies.push(finalPath)
+          }
         }
       }
     })
@@ -96,7 +98,6 @@ class Complication {
       const dependencyModule = this.buildModule(key, dependency)
       this.modules.push(dependencyModule)
     })
-
     return module
   }
 }

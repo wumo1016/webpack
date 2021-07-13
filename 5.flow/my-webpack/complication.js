@@ -33,7 +33,13 @@ class Complication {
       const entryFilePath = slash(path.join(this.options.context || process.cwd(), entry[key]))
       /* 6.从入口文件触发 调用所有的配置的loader对模块进行编译 */
       const entryModule = this.buildModule(key, entryFilePath)
-      this.modules.push(entryModule)
+      // this.modules.push(entryModule)
+      // 8.根据入口和模块之间的依赖关系 组装成一个个包含多个模块的 Chunk
+      const entryModule = this.buildModule(key, entryFilePath)
+      let chunk = { name: key, entryModule, modules: this.modules.filter(v => v.name === key) }
+      this.entrypoints.push(chunk)
+      this.chunks.push(chunk)
+      // 9.再把每个Chunk转换成一个单独的文件加入到输出列表
     }
   }
 

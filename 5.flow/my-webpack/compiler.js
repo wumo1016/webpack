@@ -23,16 +23,16 @@ class Compiler {
 
     // 编译结束钩子
     this.hooks.done.call()
-    cb(null, {
-      toJson(options) {
-        return {
-          entrypoints: [],
-          assets: [],
-          chunks: [],
-          modules: [],
-        }
-      }
-    })
+    // cb(null, {
+    //   toJson(options) {
+    //     return {
+    //       entrypoints: [],
+    //       assets: [],
+    //       chunks: [],
+    //       modules: [],
+    //     }
+    //   }
+    // })
   }
   compiler(cb) {
     const complication = new Complication(this.options)

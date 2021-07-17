@@ -14,5 +14,5 @@ compiler.run((err, status) => {
     module: true, // 模块信息
     entries: true // 入口信息
   })
-  console.log(JSON.stringify(res));
+  // console.log(JSON.stringify(res));
 })

@@ -1,26 +1,29 @@
 const path = require('path')
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
-const resolve = paths => path.resolve(__dirname, paths)
+const resolve = (paths) => path.resolve(__dirname, paths)
 
 module.exports = {
   mode: 'development',
   devtool: false,
-  entry: './src/index.js',
+  entry: {
+    index1: './src/index1.js',
+    index2: './src/index2.js',
+  },
   output: {
     path: resolve('dist'),
-    filename: '[name].js'
+    filename: '[name].js',
   },
   resolve: {
-    extensions: ['.js', '.jsx', '.json']
+    extensions: ['.js', '.jsx', '.json'],
   },
   plugins: [
     new HtmlWebpackPlugin({
       template: resolve('./src/index.html'),
-      filename: 'index.html'
+      filename: 'index.html',
     }),
     new CleanWebpackPlugin({
-      cleanOnceBeforeBuildPatterns: ['**/*']
+      cleanOnceBeforeBuildPatterns: ['**/*'],
     }),
-  ]
+  ],
 }

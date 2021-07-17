@@ -15,7 +15,6 @@ class Complication {
     this.assets = {} // 所有产出的资源
     this.chunks = [] // 存放所有的代码块
     this.modules = [] // 存放所有的模块
-    this.files = []
   }
 
   make(cb) {
@@ -43,30 +42,18 @@ class Complication {
         entryModule,
         modules: this.modules.filter((v) => v.name === key),
       }
+
       this.entrypoints.push(chunk)
       this.chunks.push(chunk)
     }
+    console.log(this.modules);
     // 9.再把每个Chunk转换成一个单独的文件加入到输出列表
     this.chunks.forEach((chunk) => {
       let filename = this.options.output.filename.replace('[name]', chunk.name)
       this.assets[filename] = getSource(chunk)
     })
-    // 10.在确定好输出内容后 根据配置确定输出的路径和文件名 把文件内容写入到文件系统
-    this.files = Object.keys(this.assets)
-    for (const filename in this.assets) {
-      const filepath = path.join(this.options.output.path, filename)
-      fs.writeFileSync(filepath, this.assets[filename], 'utf8')
-    }
-    cb(null, {
-      toJson: () => {
-        return {
-          assets: this.assets,
-          chunks: this.chunks,
-          modules: this.modules,
-          entrypoints: this.entrypoints,
-        }
-      },
-    })
+
+    cb(null, this.assets)
   }
 
   buildModule(key, modulePath) {
@@ -76,7 +63,6 @@ class Complication {
     const rules = this.options.module.rules || []
     let loaders = [] // 寻找匹配的loader
     for (let i = 0; i < rules.length; i++) {
-      // ad
       if (rules[i].test.test(modulePath)) {
         loaders = [...loaders, ...rules[i].use]
       }
@@ -115,9 +101,10 @@ class Complication {
           // 得到模块id
           const depMduleId = './' + path.posix.relative(baseDir, finalPath)
           node.arguments = [types.stringLiteral(depMduleId)]
-          if (!this.modules.map((v) => v.id).includes(depMduleId)) {
-            module.dependencies.push(finalPath)
-          }
+          // if (this.modules.map((v) => v.id).includes(depMduleId)) {
+          //   module.dependencies.push(finalPath)
+          // }
+          module.dependencies.push(finalPath)
         }
       },
     })

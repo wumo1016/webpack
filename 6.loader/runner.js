@@ -23,7 +23,7 @@ let rules = [
   },
 ]
 
-const paths = request.split('!') // ['inline1-loader', 'inline2-loader', 'entry']
+const paths = request.replace(/^-?!+/, '').split('!') // ['inline1-loader', 'inline2-loader', 'entry']
 const entryPath = paths.pop()
 
 // 行内 loader
@@ -46,14 +46,19 @@ rules.map((rule) => {
 })
 
 // 合并loader 顺序固定 后联正前
-const loaders = [
-  ...postLoaders,
-  ...inlineLoaders,
-  ...normalLoaders,
-  ...preLoaders,
-].map(resoleLoader)
+let loaders
+if (request.startsWith('-!')) {
+  loaders = [...postLoaders, ...inlineLoaders]
+} else if (request.startsWith('!!')) {
+  loaders = [...inlineLoaders]
+} else if (request.startsWith('!')) {
+  loaders = [...postLoaders, ...inlineLoaders, ...preLoaders]
+} else {
+  loaders = [...postLoaders, ...inlineLoaders, ...normalLoaders, ...preLoaders]
+}
+loaders = loaders.map(resoleLoader)
 
-createLoaderFiles(loaders)
+// createLoaderFiles(loaders)
 
 runLoaders(
   {
@@ -64,7 +69,8 @@ runLoaders(
   },
   (err, res) => {
     console.log(err)
-    console.log(res.resourceBuffer.toString('utf8'))
+    console.log(res);
+    // console.log(res.resourceBuffer.toString('utf8'))
   }
 )
 

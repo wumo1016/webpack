@@ -5,7 +5,7 @@ const traverse = require('@babel/traverse').default
 const generate = require('@babel/generator').default
 const types = require('babel-types')
 
-const slash = str => str.replace(/\\/g, '/')
+const slash = (str) => str.replace(/\\/g, '/')
 const baseDir = slash(process.cwd())
 
 class Complication {
@@ -31,17 +31,23 @@ class Complication {
     }
     for (const key in entry) {
       // 获取entry的绝对路径
-      const entryFilePath = slash(path.join(this.options.context || process.cwd(), entry[key]))
+      const entryFilePath = slash(
+        path.join(this.options.context || process.cwd(), entry[key])
+      )
       /* 6.从入口文件触发 调用所有的配置的loader对模块进行编译 */
       const entryModule = this.buildModule(key, entryFilePath)
       // this.modules.push(entryModule)
       // 8.根据入口和模块之间的依赖关系 组装成一个个包含多个模块的 Chunk
-      let chunk = { name: key, entryModule, modules: this.modules.filter(v => v.name === key) }
+      let chunk = {
+        name: key,
+        entryModule,
+        modules: this.modules.filter((v) => v.name === key),
+      }
       this.entrypoints.push(chunk)
       this.chunks.push(chunk)
     }
     // 9.再把每个Chunk转换成一个单独的文件加入到输出列表
-    this.chunks.forEach(chunk => {
+    this.chunks.forEach((chunk) => {
       let filename = this.options.output.filename.replace('[name]', chunk.name)
       this.assets[filename] = getSource(chunk)
     })
@@ -59,7 +65,7 @@ class Complication {
           modules: this.modules,
           entrypoints: this.entrypoints,
         }
-      }
+      },
     })
   }
 
@@ -70,14 +76,15 @@ class Complication {
     const rules = this.options.module.rules || []
     let loaders = [] // 寻找匹配的loader
     for (let i = 0; i < rules.length; i++) {
+      // ad
       if (rules[i].test.test(modulePath)) {
-        loaders = [
-          ...loaders,
-          ...rules[i].use
-        ]
+        loaders = [...loaders, ...rules[i].use]
       }
     }
-    sourceCode = loaders.reduceRight((sourceCode, loader) => require(loader)(sourceCode), sourceCode)
+    sourceCode = loaders.reduceRight(
+      (sourceCode, loader) => require(loader)(sourceCode),
+      sourceCode
+    )
     /* 7.再找出该模块所依赖的模块 给i贵本步骤 直到所有入口的依赖都经过本步骤的处理 */
     // 获取当前模块id
     const moduleId = './' + path.posix.relative(baseDir, modulePath)
@@ -86,7 +93,8 @@ class Complication {
     // ast语法解析 https://astexplorer.net/
     const ast = parser.parse(sourceCode, { sourceType: 'module' })
     traverse(ast, {
-      CallExpression: ({ node }) => { // 对应require表达式
+      CallExpression: ({ node }) => {
+        // 对应require表达式
         if (node.callee.name === 'require') {
           let moduleName = node.arguments[0].value // require中的值
           // 获取当前模块的所属目录 path.posix将所有的\都转换为/
@@ -105,22 +113,20 @@ class Complication {
           }
           if (!finalPath) throw new Error(`Module ${modulePath} is not found`)
           // 得到模块id
-          const depMduleId = './' + path.posix.relative(baseDir, depModulePath)
-          node.arguments = [
-            types.stringLiteral(depMduleId)
-          ]
-          if (!this.modules.map(v => v.id).includes(depMduleId)) {
+          const depMduleId = './' + path.posix.relative(baseDir, finalPath)
+          node.arguments = [types.stringLiteral(depMduleId)]
+          if (!this.modules.map((v) => v.id).includes(depMduleId)) {
             module.dependencies.push(finalPath)
           }
         }
-      }
+      },
     })
     // 生成转换后的代码
     const { code } = generate(ast)
     module._source = code
 
     // 递归处理
-    module.dependencies.forEach(dependency => {
+    module.dependencies.forEach((dependency) => {
       const dependencyModule = this.buildModule(key, dependency)
       this.modules.push(dependencyModule)
     })
@@ -132,10 +138,15 @@ function getSource(chunk) {
   return `
   (() => {
     var modules = ({
-      "./src/title.js":
-        ((module) => {
-          module.exports = 'title'
-        })
+      ${chunk.modules
+        .map(
+          (module) => `
+        '${module.id}': (module, exports, require) => {
+          ${module._source}
+        }
+      `
+        )
+        .join(',')}
     });
     var cache = {};
     function require(moduleId) {
@@ -151,10 +162,9 @@ function getSource(chunk) {
     }
     var exports = {};
     (() => {
-      const tltle = require("./src/title.js")
-      console.log(title);
+      ${chunk.entryModule._source}
     })();
-  })();
+  })()
   `
 }
 

@@ -1,8 +1,8 @@
-const webpack = require('webpack')
-const webpackOptions = require('./webpack.config')
+// const webpack = require('webpack')
+// const webpackOptions = require('./webpack.config')
 
-// const webpack = require('./my-webpack')
-// const webpackOptions = require('./my.webpack.config')
+const webpack = require('./my-webpack')
+const webpackOptions = require('./my.webpack.config')
 // debugger
 // compiler代表整个编译过程 run代表启动编译
 const compiler = webpack(webpackOptions)

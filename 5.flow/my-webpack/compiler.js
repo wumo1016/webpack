@@ -16,23 +16,23 @@ class Compiler {
   run(cb) {
     // 开始编译钩子
     this.hooks.run.call()
-    this.compiler((error, assets) => {
+    this.compiler((error, stats) => {
       // 写入文件系统前的回调
-      this.hooks.emit.call(assets)
+      this.hooks.emit.call(stats.assets)
 
       // 10.在确定好输出内容后 根据配置确定输出的路径和文件名 把文件内容写入到文件系统
-      for (const filename in assets) {
+      for (const filename in stats.assets) {
         const filepath = path.join(this.options.output.path, filename)
-        fs.writeFileSync(filepath, assets[filename], 'utf8')
+        fs.writeFileSync(filepath, stats.assets[filename], 'utf8')
       }
 
       cb(null, {
         toJson: () => {
           return {
-            assets: this.assets,
-            chunks: this.chunks,
-            modules: this.modules,
-            entrypoints: this.entrypoints,
+            assets: stats.assets,
+            chunks: stats.chunks,
+            modules: stats.modules,
+            entrypoints: stats.entrypoints,
           }
         },
       })

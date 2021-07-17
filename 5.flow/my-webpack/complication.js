@@ -40,20 +40,23 @@ class Complication {
       let chunk = {
         name: key,
         entryModule,
-        modules: this.modules.filter((v) => v.name === key),
+        modules: this.modules.filter((v) => v.name.has(key)),
       }
-
       this.entrypoints.push(chunk)
       this.chunks.push(chunk)
     }
-    console.log(this.modules);
     // 9.再把每个Chunk转换成一个单独的文件加入到输出列表
     this.chunks.forEach((chunk) => {
       let filename = this.options.output.filename.replace('[name]', chunk.name)
       this.assets[filename] = getSource(chunk)
     })
 
-    cb(null, this.assets)
+    cb(null, {
+      assets: this.assets,
+      chunks: this.chunks,
+      modules: this.modules,
+      entrypoints: this.entrypoints,
+    })
   }
 
   buildModule(key, modulePath) {
@@ -74,7 +77,7 @@ class Complication {
     /* 7.再找出该模块所依赖的模块 给i贵本步骤 直到所有入口的依赖都经过本步骤的处理 */
     // 获取当前模块id
     const moduleId = './' + path.posix.relative(baseDir, modulePath)
-    let module = { id: moduleId, dependencies: [], name: key }
+    let module = { id: moduleId, dependencies: [], name: new Set([key]) }
 
     // ast语法解析 https://astexplorer.net/
     const ast = parser.parse(sourceCode, { sourceType: 'module' })
@@ -85,37 +88,28 @@ class Complication {
           let moduleName = node.arguments[0].value // require中的值
           // 获取当前模块的所属目录 path.posix将所有的\都转换为/
           const moduleDir = path.posix.dirname(modulePath)
-          const depModulePath = path.posix.join(moduleDir, moduleName)
+          let depModulePath = path.posix.join(moduleDir, moduleName)
           let extensions = this.options.resolve.extensions || []
-          // 添加文件后缀
-          extensions.unshift('') // 匹配已有后缀的情况
-          let finalPath
-          for (let i = 0; i < extensions.length; i++) {
-            let filePath = depModulePath + extensions[i]
-            if (fs.existsSync(filePath)) {
-              finalPath = filePath
-              break
-            }
-          }
-          if (!finalPath) throw new Error(`Module ${modulePath} is not found`)
+          depModulePath = tryExtensions(depModulePath, extensions)
           // 得到模块id
-          const depMduleId = './' + path.posix.relative(baseDir, finalPath)
+          const depMduleId = './' + path.posix.relative(baseDir, depModulePath)
           node.arguments = [types.stringLiteral(depMduleId)]
-          // if (this.modules.map((v) => v.id).includes(depMduleId)) {
-          //   module.dependencies.push(finalPath)
-          // }
-          module.dependencies.push(finalPath)
+          module.dependencies.push({ depMduleId, depModulePath })
         }
       },
     })
     // 生成转换后的代码
     const { code } = generate(ast)
     module._source = code
-
     // 递归处理
-    module.dependencies.forEach((dependency) => {
-      const dependencyModule = this.buildModule(key, dependency)
-      this.modules.push(dependencyModule)
+    module.dependencies.forEach(({ depMduleId, depModulePath }) => {
+      let depModule = this.modules.find((v) => v.id === depMduleId)
+      if (depModule) {
+        depModule.name.add(key)
+      } else {
+        depModule = this.buildModule(key, depModulePath)
+        this.modules.push(depModule)
+      }
     })
     return module
   }
@@ -153,6 +147,17 @@ function getSource(chunk) {
     })();
   })()
   `
+}
+
+function tryExtensions(modulePath, extensions) {
+  extensions.unshift('')
+  for (let i = 0; i < extensions.length; i++) {
+    let filePath = modulePath + extensions[i] // ./title.js
+    if (fs.existsSync(filePath)) {
+      return filePath
+    }
+  }
+  throw new Error(`Module not found`)
 }
 
 module.exports = Complication

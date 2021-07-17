@@ -1,2 +1,2 @@
-const title = require('./title1')
+const title = require('./title2')
 console.log(title);

@@ -59,6 +59,10 @@ module.exports = {
           },
         ],
       },
+      {
+        test: /\.less$/,
+        use: ['style-loader', 'less-loader'],
+      },
       // {
       //   test: /\.js$/,
       //   use: ['normal1-loader', 'normal2-loader'],

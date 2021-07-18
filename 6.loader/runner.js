@@ -76,7 +76,7 @@ runLoaders(
 
 // 将自定义loader的名称转换成绝对路径
 function resoleLoader(loader) {
-  return path.resolve(__dirname, 'loaders', loader).replace(/\\/g, '/') + '.js'
+  return path.resolve(__dirname, 'loader-runner', loader).replace(/\\/g, '/') + '.js'
 }
 // 自动创建loader文件
 function createLoaderFiles(loaders) {

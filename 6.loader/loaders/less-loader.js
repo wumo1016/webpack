@@ -10,8 +10,7 @@ function loader(content) {
       filename: this.resource,
     },
     (err, output) => {
-      console.log(output);
-      cb(null, output.css)
+      cb(null, `module.exports = ${JSON.stringify(output.css)}`)
     }
   )
 }

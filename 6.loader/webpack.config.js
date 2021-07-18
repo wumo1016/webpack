@@ -36,6 +36,17 @@ module.exports = {
           },
         ],
       },
+      {
+        test: /\.(jpg|png)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              filename: '[hash:8].[ext]',
+            },
+          },
+        ],
+      },
       // {
       //   test: /\.js$/,
       //   use: ['normal1-loader', 'normal2-loader'],

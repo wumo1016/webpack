@@ -5,7 +5,6 @@
       }
       loader.pitch = function () {
         console.log('normal1-loader pitch')
-        return '123456'
       }
       module.exports = loader
     

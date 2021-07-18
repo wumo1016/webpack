@@ -1,6 +1,7 @@
 const path = require('path')
 const fs = require('fs')
-const { runLoaders } = require('loader-runner')
+// const { runLoaders } = require('loader-runner')
+const { runLoaders } = require('./my-loader-runner')
 // 入口文件
 const entry = path.resolve(__dirname, './src/index.js')
 
@@ -68,15 +69,16 @@ runLoaders(
     readResource: fs.readFile.bind(fs), // 自定义读取文件的方法
   },
   (err, res) => {
-    console.log(err)
-    console.log(res);
-    // console.log(res.resourceBuffer.toString('utf8'))
+    // console.log(err)
+    // console.log(res)
   }
 )
 
 // 将自定义loader的名称转换成绝对路径
 function resoleLoader(loader) {
-  return path.resolve(__dirname, 'loader-runner', loader).replace(/\\/g, '/') + '.js'
+  return (
+    path.resolve(__dirname, 'loader-runner', loader).replace(/\\/g, '/') + '.js'
+  )
 }
 // 自动创建loader文件
 function createLoaderFiles(loaders) {

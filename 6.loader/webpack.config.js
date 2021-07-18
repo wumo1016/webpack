@@ -36,13 +36,25 @@ module.exports = {
           },
         ],
       },
+      // {
+      //   test: /\.(jpg|png)$/,
+      //   use: [
+      //     {
+      //       loader: 'file-loader',
+      //       options: {
+      //         filename: '[hash:8].[ext]',
+      //       },
+      //     },
+      //   ],
+      // },
       {
         test: /\.(jpg|png)$/,
         use: [
           {
-            loader: 'file-loader',
+            loader: 'url-loader',
             options: {
               filename: '[hash:8].[ext]',
+              limit: 10 * 1024,
             },
           },
         ],

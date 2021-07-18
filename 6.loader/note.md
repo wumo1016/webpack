@@ -52,4 +52,6 @@
 - 返回值
   - loader 可以返回一个值
   - 也可以返回多个值 如果是多个值 就必须使用 this.callback this.callback(err, 下一个 loader 的参数)
-    - callback是loader-runner提供的一个方法
+    - callback 是 loader-runner 提供的一个方法
+- file-loader
+  - 实际就是复制文件

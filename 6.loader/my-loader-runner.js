@@ -6,7 +6,7 @@
 function runLoaders(options, cb) {
   let { resource, loaders, context: loaderContext, readResource } = options
   loaderContext = loaderContext || {}
-  readResource = readResource || false.readFile
+  options.readResource = readResource || false.readFile
   // 构建loader对象
   const loaderObjects = loaders.map(createLoaderObject)
 
@@ -76,6 +76,9 @@ function runLoaders(options, cb) {
 }
 
 function interatePitchLoaders(options, ctx, cb) {
+  if (ctx.loaderIndex > ctx.loaders.length - 1) {
+    return processResource(options, ctx, cb)
+  }
   let curLoaderObject = ctx.loaders[ctx.loaderIndex] // 获取当前loader
   if (curLoaderObject.pitchExecuted) {
     ctx.loaderIndex++
@@ -94,26 +97,41 @@ function interatePitchLoaders(options, ctx, cb) {
       ctx,
       [ctx.remainingRequest, ctx.previousRequest, ctx.data],
       (err, ...args) => {
-        // todo
+        // args可能有值 可能没值 可能有一个值 可能有多个值
+        // 有任何一个有值就跳过后续的loader 直接执行前一个loader的normal
+        if (args.length > 0 && args.some((item) => !!item)) {
+        } else {
+          // 否则继续执行下一个loader的pitch
+          return interatePitchLoaders(options, ctx, cb)
+        }
       }
     )
   })
 }
+// 读取文件
+function processResource(options, ctx, cb) {
+  options.readResource(ctx.resource, (err, buffer) => {
+    options.resourceBuffer = buffer
+    ctx.loaderIndex = ctx.loaders.length - 1
+    interateNormalLoaders(options, ctx, [buffer], cb)
+  })
+}
 
-function runSyncOrAsync(pitchFn, ctx, args, cb) {
+function interateNormalLoaders(options, ctx, args, runLoadersCb) {}
+
+function runSyncOrAsync(fn, ctx, args, cb) {
   let isSync = true // 默认同步
 
-  const innerCallback = (ctx.callback = () => {
-    isSync = false
+  ctx.callback = (...args) => {
     cb.apply(null, args)
-  })
+  }
 
   ctx.async = () => {
     isSync = false
-    return innerCallback
+    return ctx.callback
   }
 
-  const res = pitchFn.apply(pitchFn, args)
+  const res = fn.apply(ctx, args)
   if (isSync) {
     if (res == undefined) {
       return cb()

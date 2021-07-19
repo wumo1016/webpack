@@ -62,7 +62,72 @@ function runLoaders(options, cb) {
     },
   })
 
-  cb(null, {})
+  const processOptions = {
+    resourceBuffer: null, // 存放原始内容对应的buffer
+    readResource,
+  }
+  // 从左往右执行每个loader的pitch方法
+  interatePitchLoaders(processOptions, loaderContext, (err, res) => {
+    cb(null, {
+      res,
+      resourceBuffer: processOptions.resourceBuffer,
+    })
+  })
+}
+
+function interatePitchLoaders(options, ctx, cb) {
+  let curLoaderObject = ctx.loaders[ctx.loaderIndex] // 获取当前loader
+  if (curLoaderObject.pitchExecuted) {
+    ctx.loaderIndex++
+    return interatePitchLoaders(options, ctx, cb)
+  }
+  loaderLoader(curLoaderObject, () => {
+    // 获取当前loader的pitch函数
+    let pitchFn = curLoaderObject.pitch
+    curLoaderObject.pitchExecuted = true
+    // 如果当前loader没有pitch就直接执行下一个loader的pitch
+    if (!pitchFn) {
+      return interatePitchLoaders(options, ctx, cb)
+    }
+    runSyncOrAsync(
+      pitchFn,
+      ctx,
+      [ctx.remainingRequest, ctx.previousRequest, ctx.data],
+      (err, ...args) => {
+        // todo
+      }
+    )
+  })
+}
+
+function runSyncOrAsync(pitchFn, ctx, args, cb) {
+  let isSync = true // 默认同步
+
+  const innerCallback = (ctx.callback = () => {
+    isSync = false
+    cb.apply(null, args)
+  })
+
+  ctx.async = () => {
+    isSync = false
+    return innerCallback
+  }
+
+  const res = pitchFn.apply(pitchFn, args)
+  if (isSync) {
+    if (res == undefined) {
+      return cb()
+    }
+    return cb(null, res)
+  }
+}
+
+function loaderLoader(loaderObject, cb) {
+  const module = require(loaderObject.path)
+  loaderObject.normal = module
+  loaderObject.pitch = module.pitch
+  loaderObject.raw = module.raw
+  cb()
 }
 
 function createLoaderObject(loaderPath) {

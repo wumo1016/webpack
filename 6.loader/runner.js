@@ -70,7 +70,7 @@ runLoaders(
   },
   (err, res) => {
     // console.log(err)
-    // console.log(res)
+    console.log(res)
   }
 )
 

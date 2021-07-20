@@ -117,7 +117,38 @@ function processResource(options, ctx, cb) {
   })
 }
 
-function interateNormalLoaders(options, ctx, args, runLoadersCb) {}
+function interateNormalLoaders(options, ctx, args, runLoadersCb) {
+  if (ctx.loaderIndex < 0) {
+    return runLoadersCb(null, ...args)
+  }
+  let curLoaderObject = ctx.loaders[ctx.loaderIndex] // 获取当前loader
+  if (curLoaderObject.normalExcuted) {
+    ctx.loaderIndex--
+    return interateNormalLoaders(options, ctx, args, runLoadersCb)
+  }
+  loaderLoader(curLoaderObject, () => {
+    // 获取当前loader的pitch函数
+    let normalFn = curLoaderObject.normal
+    curLoaderObject.normalExcuted = true
+    // 如果当前loader没有pitch就直接执行下一个loader的pitch
+    if (!normalFn) {
+      return interateNormalLoaders(options, ctx, args, runLoadersCb)
+    }
+    convertArgs(args, ctx.raw)
+    runSyncOrAsync(normalFn, ctx, args, (err, ...args) => {
+      if (err) return runLoadersCb(err)
+      interateNormalLoaders(options, ctx, args, runLoadersCb)
+    })
+  })
+}
+
+function convertArgs(args, raw) {
+  if (raw && !Buffer.isBuffer(args[0])) {
+    args[0] = Buffer.from(args[0])
+  } else if (!raw && Buffer.isBuffer(args[0])) {
+    args[0] = args[0].toString('utf8')
+  }
+}
 
 function runSyncOrAsync(fn, ctx, args, cb) {
   let isSync = true // 默认同步

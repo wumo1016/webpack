@@ -17,3 +17,9 @@ hook.tap('3', (name) => {
 })
 // 触发
 hook.call('wyb')
+
+/* 
+1 wyb
+2 wyb
+3 wyb
+*/

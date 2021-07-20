@@ -20,3 +20,8 @@ hook.tap('4', (name) => {
 })
 
 hook.call('wyb')
+
+/* 
+1 wyb
+2 wyb
+*/

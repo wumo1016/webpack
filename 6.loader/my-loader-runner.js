@@ -100,6 +100,8 @@ function interatePitchLoaders(options, ctx, cb) {
         // args可能有值 可能没值 可能有一个值 可能有多个值
         // 有任何一个有值就跳过后续的loader 直接执行前一个loader的normal
         if (args.length > 0 && args.some((item) => !!item)) {
+          ctx.loaderIndex--
+          return interateNormalLoaders(options, ctx, args, cb)
         } else {
           // 否则继续执行下一个loader的pitch
           return interatePitchLoaders(options, ctx, cb)
@@ -119,7 +121,7 @@ function processResource(options, ctx, cb) {
 
 function interateNormalLoaders(options, ctx, args, runLoadersCb) {
   if (ctx.loaderIndex < 0) {
-    return runLoadersCb(null, ...args)
+    return runLoadersCb(null, args)
   }
   let curLoaderObject = ctx.loaders[ctx.loaderIndex] // 获取当前loader
   if (curLoaderObject.normalExcuted) {

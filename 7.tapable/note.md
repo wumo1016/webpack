@@ -10,3 +10,4 @@
 - SyncLoopHook
   - 不停的循环执行函数 直到函数返回的结果都是undefined为止
   - 每次循环都是从头开始
+- AsyncParalleHook: 异步并行钩子

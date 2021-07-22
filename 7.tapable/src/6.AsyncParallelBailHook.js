@@ -69,7 +69,7 @@ hook.tapPromise('3', (name, cb) => {
 
 hook.promise('wyb').then(res => {
   console.timeEnd('async')
-})
+}).catch(e => {})
 
 /* 
 1 wyb

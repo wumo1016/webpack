@@ -6,7 +6,7 @@ let count1 = 0
 let count2 = 0
 let count3 = 0
 
-hook.tap('1', (name) => {
+hook.tap('1', name => {
   console.log(1, count1)
   if (++count1 === 1) {
     count1 = 0
@@ -15,7 +15,7 @@ hook.tap('1', (name) => {
   return true
 })
 
-hook.tap('2', (name) => {
+hook.tap('2', name => {
   console.log(2, count2)
   if (++count2 === 2) {
     count2 = 0
@@ -24,7 +24,7 @@ hook.tap('2', (name) => {
   return true
 })
 
-hook.tap('3', (name) => {
+hook.tap('3', name => {
   console.log(3, count3)
   if (++count3 === 3) {
     count3 = 0

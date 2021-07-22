@@ -3,20 +3,20 @@ const { AsyncParallelHook } = require('tapable')
 const hook = new AsyncParallelHook(['a'])
 
 /* ------------------ 第一种写法 --------------------- */
-/* hook.tap('1', (name) => {
+/* hook.tap('1', name => {
   console.log(1, name)
 })
 
-hook.tap('2', (name) => {
+hook.tap('2', name => {
   console.log(2, name)
   return '2'
 })
 
-hook.tap('3', (name) => {
+hook.tap('3', name => {
   console.log(3, name)
 })
 
-hook.callAsync('wyb', (err) => {
+hook.callAsync('wyb', err => {
   console.log(err)
 }) */
 
@@ -50,7 +50,7 @@ hook.tapAsync('3', (name, cb) => {
   }, 3000)
 })
 
-hook.callAsync('wyb', (err) => {
+hook.callAsync('wyb', err => {
   console.timeEnd('async')
   console.log(err)
 }) */
@@ -65,7 +65,7 @@ undefined
 
 /* ------------------------ 第三种写法 --------------------------- */
 console.time('async')
-hook.tapPromise('1', (name) => {
+hook.tapPromise('1', name => {
   return new Promise((r, j) => {
     setTimeout(() => {
       console.log(1, name)
@@ -92,7 +92,7 @@ hook.tapPromise('3', (name, cb) => {
   })
 })
 
-hook.promise('wyb').then((res) => {
+hook.promise('wyb').then(res => {
   console.timeEnd('async')
 })
 

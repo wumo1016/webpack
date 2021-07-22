@@ -15,3 +15,4 @@
 - 6.AsyncParallelBailHook: 异步并行保险钩子
 - 7.AsyncSeriesHook: 异步串行钩子
 - 8.AsyncSeriesBailHook: 异步串行保险钩子
+- 9.AsyncSeriesWaterfallHook

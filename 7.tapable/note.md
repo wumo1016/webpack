@@ -16,3 +16,9 @@
 - 7.AsyncSeriesHook: 异步串行钩子
 - 8.AsyncSeriesBailHook: 异步串行保险钩子
 - 9.AsyncSeriesWaterfallHook
+
+## 其他
+  - new Function('a, b', 'return a - b')
+    - 第一个参数代表函数的参数 以逗号分隔
+    - 第二个代表函数的返回值
+  

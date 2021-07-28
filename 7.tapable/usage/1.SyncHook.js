@@ -16,6 +16,7 @@ hook.tap('2', name => {
 hook.tap('3', name => {
   console.log(3, name)
 })
+
 // 触发
 hook.call('wyb')
 

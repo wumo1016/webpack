@@ -1,5 +1,5 @@
 const call_delegate = function (...args) {
-  this.call = this._createCall('sync')
+  this.call = this._createCall('sync') // 返回拼装好的 new Function
   return this.call(...args)
 }
 

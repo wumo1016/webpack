@@ -11,6 +11,12 @@ class HookCodeFactory {
       case 'sync':
         fn = new Function(this.args(), this.header() + this.content())
         break
+      case 'async':
+        fn = new Function(
+          this.args({ after: '_callback' }),
+          this.header() + this.content()
+        )
+        break
       default:
         break
     }
@@ -21,8 +27,15 @@ class HookCodeFactory {
     this.options = options
   }
 
-  args() {
+  args(options = {}) {
+    const { before, after } = options
     let args = this.options.args || []
+    if (before) {
+      args = [before, ...args]
+    }
+    if (after) {
+      args = [...args, after]
+    }
     return args.join(',')
   }
 
@@ -30,10 +43,24 @@ class HookCodeFactory {
     return 'var _x = this._x;\n'
   }
 
+  // content
   callTapsSeries() {
     const taps = this.options.taps
     if (taps.length < 1) return ''
     let code = ''
+    for (let index = 0; index < taps.length; index++) {
+      let content = this.callTap(index)
+      code += content
+    }
+    return code
+  }
+  // content
+  callTapsParallel() {
+    const taps = this.options.taps
+    if (taps.length < 1) return ''
+    let code = ''
+    code += `var _counter = ${this.options.taps.length};\n`
+    code += `var _done = function(){_callback()};\n`
     for (let index = 0; index < taps.length; index++) {
       let content = this.callTap(index)
       code += content
@@ -48,6 +75,13 @@ class HookCodeFactory {
     switch (typeInfo.type) {
       case 'sync':
         code += `_fn${tapIndex}(${this.args()});\n`
+        break
+      case 'async':
+        code += `_fn${tapIndex}(${this.args({
+          after: function () {
+            if (--_counter === 0) _done()
+          },
+        })});\n`
         break
       default:
         break

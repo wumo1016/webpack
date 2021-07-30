@@ -3,11 +3,17 @@ const call_delegate = function (...args) {
   return this.call(...args)
 }
 
+const call_async_delegate = function (...args) {
+  this.callAsync = this._createCall('async') // 返回拼装好的 new Function
+  return this.callAsync(...args)
+}
+
 class Hook {
   constructor(args = []) {
     this._args = args
     this.taps = [] // 保存的是事件对象函数 [{ name, fn }]
     this.call = call_delegate // 用户调用的call方法
+    this.callAsync = call_async_delegate
     this._x = undefined // 真正存放事件函数的数组 [fn]
   }
 
@@ -26,6 +32,10 @@ class Hook {
   // options就是订阅事件的名字
   tap(options, fn) {
     this._tap('sync', options, fn)
+  }
+
+  tapAsync(options, fn) {
+    this._tap('async', options, fn)
   }
 
   _tap(type, options, fn) {

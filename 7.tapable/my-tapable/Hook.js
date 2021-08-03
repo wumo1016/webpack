@@ -8,12 +8,19 @@ const call_async_delegate = function (...args) {
   return this.callAsync(...args)
 }
 
+const promise_delegate = function (...args) {
+  this.promise = this._createCall('promise') // 返回拼装好的 new Function
+  debugger
+  return this.promise(...args)
+}
+
 class Hook {
   constructor(args = []) {
     this._args = args
     this.taps = [] // 保存的是事件对象函数 [{ name, fn }]
     this.call = call_delegate // 用户调用的call方法
     this.callAsync = call_async_delegate
+    this.promise = promise_delegate
     this._x = undefined // 真正存放事件函数的数组 [fn]
   }
 
@@ -36,6 +43,10 @@ class Hook {
 
   tapAsync(options, fn) {
     this._tap('async', options, fn)
+  }
+
+  tapPromise(options, fn) {
+    this._tap('promise', options, fn)
   }
 
   _tap(type, options, fn) {

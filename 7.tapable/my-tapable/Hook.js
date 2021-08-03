@@ -10,7 +10,6 @@ const call_async_delegate = function (...args) {
 
 const promise_delegate = function (...args) {
   this.promise = this._createCall('promise') // 返回拼装好的 new Function
-  debugger
   return this.promise(...args)
 }
 

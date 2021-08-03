@@ -97,7 +97,7 @@ class HookCodeFactory {
         code += `var _promise${tapIndex} = _fn${tapIndex}(${this.args()});\n
         _promise${tapIndex}.then(function (_result${tapIndex}) {\n
           if (--_counter === 0) _done()\n
-        });`
+        });\n`
         break
       default:
         break

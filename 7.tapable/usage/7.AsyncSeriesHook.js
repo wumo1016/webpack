@@ -1,9 +1,10 @@
-const { AsyncSeriesHook } = require('tapable')
+// const { AsyncSeriesHook } = require('tapable')
+const { AsyncSeriesHook } = require('../my-tapable')
 
 const hook = new AsyncSeriesHook(['a'])
 
 /* ------------------------ 第一种写法 --------------------------- */
-/* console.time('async')
+console.time('async')
 hook.tapAsync('1', (name, cb) => {
   setTimeout(() => {
     console.log(1, name)
@@ -27,8 +28,7 @@ hook.tapAsync('3', (name, cb) => {
 
 hook.callAsync('wyb', err => {
   console.timeEnd('async')
-  console.log(err)
-}) */
+})
 
 /* 
 1 wyb
@@ -38,8 +38,8 @@ async: 6.027s
 undefined
 */
 
-/* ------------------------ 第三种写法 --------------------------- */
-console.time('async')
+/* ------------------------ 第二种写法 --------------------------- */
+/* console.time('async')
 hook.tapPromise('1', name => {
   return new Promise((r, j) => {
     setTimeout(() => {
@@ -69,7 +69,7 @@ hook.tapPromise('3', (name, cb) => {
 
 hook.promise('wyb').then(res => {
   console.timeEnd('async')
-})
+}) */
 
 /* 
 1 wyb

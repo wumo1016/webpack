@@ -54,14 +54,28 @@ class HookCodeFactory {
   }
 
   // content
-  callTapsSeries() {
+  callTapsSeries({ onDone }) {
     const taps = this.options.taps
     if (taps.length < 1) return ''
     let code = ''
-    for (let index = 0; index < taps.length; index++) {
-      let content = this.callTap(index)
-      code += content
+    let current = onDone
+    for (let index = taps.length - 1; index >= 0; index--) {
+      const unroll = current !== onDone
+      if (unroll) {
+        code += `function _next${index}(){\n`
+        code += current()
+        code += '}\n'
+        current = () => `_next${index}();\n`
+      }
+      const done = current
+      const content = this.callTap(index, { onDone: done })
+      current = () => content
     }
+    code += current()
+    // for (let index = 0; index < taps.length; index++) {
+    //   let content = this.callTap(index)
+    //   code += content
+    // }
     return code
   }
   // content
@@ -72,13 +86,15 @@ class HookCodeFactory {
     code += `var _counter = ${this.options.taps.length};\n`
     code += `var _done = function(){${onDone()}};\n`
     for (let index = 0; index < taps.length; index++) {
-      let content = this.callTap(index)
+      let content = this.callTap(index, {
+        onDone: () => `if (--_counter === 0) _done()`,
+      })
       code += content
     }
     return code
   }
 
-  callTap(tapIndex) {
+  callTap(tapIndex, { onDone }) {
     let code = ''
     code += `var _fn${tapIndex} = _x[${tapIndex}];\n`
     const typeInfo = this.options.taps[tapIndex]
@@ -88,9 +104,9 @@ class HookCodeFactory {
         break
       case 'async':
         code += `_fn${tapIndex}(${this.args({
-          after: function () {
-            if (--_counter === 0) _done()
-          },
+          after: `function () {
+            ${onDone()}
+          }`,
         })});\n`
         break
       case 'promise':
@@ -107,3 +123,5 @@ class HookCodeFactory {
 }
 
 module.exports = HookCodeFactory
+
+//

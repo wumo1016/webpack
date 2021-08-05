@@ -54,28 +54,29 @@ class HookCodeFactory {
   }
 
   // content
-  callTapsSeries({ onDone }) {
+  callTapsSeries({ onDone } = { onDone: '' }) {
     const taps = this.options.taps
     if (taps.length < 1) return ''
     let code = ''
-    let current = onDone
-    for (let index = taps.length - 1; index >= 0; index--) {
-      const unroll = current !== onDone
-      if (unroll) {
-        code += `function _next${index}(){\n`
-        code += current()
-        code += '}\n'
-        current = () => `_next${index}();\n`
+    if (onDone) {
+      let current = onDone
+      for (let index = taps.length - 1; index >= 0; index--) {
+        const unroll = current !== onDone
+        if (unroll) {
+          code += `function _next${index}(){\n`
+          code += current()
+          code += '}\n'
+          onDone = () => `_next${index}();\n`
+        }
+        current = () => this.callTap(index, { onDone })
       }
-      const done = current
-      const content = this.callTap(index, { onDone: done })
-      current = () => content
+      code += current()
+    } else {
+      for (let index = 0; index < taps.length; index++) {
+        let content = this.callTap(index, { onDone })
+        code += content
+      }
     }
-    code += current()
-    // for (let index = 0; index < taps.length; index++) {
-    //   let content = this.callTap(index)
-    //   code += content
-    // }
     return code
   }
   // content

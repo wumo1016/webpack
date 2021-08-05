@@ -23,20 +23,21 @@ module.exports = AsyncSeriesHook
 /*
 ;(function anonymous(a, _callback) {
   var _x = this._x
+
   function _next1() {
     var _fn2 = _x[2]
-    _fn2(a, function (_err2) {
+    _fn2(a, function () {
       _callback()
     })
   }
   function _next0() {
     var _fn1 = _x[1]
-    _fn1(a, function (_err1) {
+    _fn1(a, function () {
       _next1()
     })
   }
   var _fn0 = _x[0]
-  _fn0(a, function (_err0) {
+  _fn0(a, function () {
     _next0()
   })
 })

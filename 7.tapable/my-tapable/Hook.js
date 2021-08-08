@@ -21,6 +21,7 @@ class Hook {
     this.callAsync = call_async_delegate
     this.promise = promise_delegate
     this._x = undefined // 真正存放事件函数的数组 [fn]
+    this.interceptors = [] // 拦截器
   }
 
   _createCall(type) {
@@ -28,6 +29,7 @@ class Hook {
       taps: this.taps, // 需要执行的函数
       args: this._args, // 事件函数接受的参数
       type, // 执行的类型 同步或异步
+      interceptors: this.interceptors,
     })
   }
 
@@ -52,12 +54,25 @@ class Hook {
     if (typeof options === 'string') {
       options = { name: options }
     }
-    const tap = {
+    let tapInfo = {
       ...options,
       type,
       fn,
     }
-    this._insert(tap)
+    tapInfo = this._runRegisterInterceptprs(tapInfo)
+    this._insert(tapInfo)
+  }
+
+  _runRegisterInterceptprs(tapInfo) {
+    for (const interceptor of this.interceptors) {
+      if (interceptor.register) {
+        let newTapInfo = interceptor.register(tapInfo)
+        if (newTapInfo) {
+          tapInfo = newTapInfo
+        }
+      }
+    }
+    return tapInfo
   }
 
   _insert(tap) {
@@ -68,6 +83,10 @@ class Hook {
   // 重新编译执行函数
   _resetCompilation() {
     this.call = call_delegate
+  }
+
+  intercept(interceptor) {
+    this.interceptors.push(interceptor)
   }
 }
 

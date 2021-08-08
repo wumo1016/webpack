@@ -50,7 +50,17 @@ class HookCodeFactory {
   }
 
   header() {
-    return 'var _x = this._x;\n'
+    let code = 'var _x = this._x;\n'
+    if (this.options.interceptors.length > 0) {
+      code += `var _interceptors = this.interceptors\n`
+    }
+    for (let i = 0; i < this.options.interceptors.length; i++) {
+      const interceptor = this.options.interceptors[i]
+      if (interceptor.call) {
+        code += `_interceptors[${i}].call(${this.args()})\n`
+      }
+    }
+    return code
   }
 
   // content

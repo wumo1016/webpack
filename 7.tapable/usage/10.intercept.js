@@ -1,4 +1,5 @@
-const { SyncHook } = require('tapable')
+// const { SyncHook } = require('tapable')
+const { SyncHook } = require('../my-tapable')
 
 const hook = new SyncHook(['name'])
 
@@ -7,6 +8,7 @@ let interceptor1 = {
   // 上一个拦截器的 tapInfo 会传给下一个拦截器 可以修改tapInfo
   register(tapInfo) {
     console.log('拦截器1 register', tapInfo)
+    tapInfo.age = 123
     return tapInfo
   },
   // 调用call的时候 所有拦截器的call立即触发

@@ -108,7 +108,7 @@ class HookCodeFactory {
 
   callTap(tapIndex, { onDone }) {
     let code = ''
-    if (this.options.interceptors) {
+    if (this.options.interceptors.length > 0) {
       code += `var _tap${tapIndex} = _taps[${tapIndex}]\n`
       for (let i = 0; i < this.options.interceptors.length; i++) {
         const interceptor = this.options.interceptors[i]

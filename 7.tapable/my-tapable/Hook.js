@@ -75,9 +75,17 @@ class Hook {
     return tapInfo
   }
 
-  _insert(tap) {
+  _insert(tapInfo) {
     this._resetCompilation()
-    this.taps.push(tap)
+    let stage = tapInfo.stage
+    if (typeof stage === 'number') {
+      let index = this.taps.findIndex(v => v.stage > stage)
+      if (index >= 0) {
+        this.taps.splice(index, 0, tapInfo)
+      } else {
+        this.taps.push(tapInfo)
+      }
+    }
   }
 
   // 重新编译执行函数

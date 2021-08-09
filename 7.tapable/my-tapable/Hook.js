@@ -76,15 +76,30 @@ class Hook {
   }
 
   _insert(tapInfo) {
+    console.log(tapInfo)
     this._resetCompilation()
     let stage = tapInfo.stage
+    let before = tapInfo.before
     if (typeof stage === 'number') {
       let index = this.taps.findIndex(v => v.stage > stage)
-      if (index >= 0) {
-        this.taps.splice(index, 0, tapInfo)
-      } else {
-        this.taps.push(tapInfo)
+      if (index === -1) {
+        index = this.taps.length
       }
+      this.taps.splice(index, 0, tapInfo)
+    } else if (Array.isArray(before)) {
+      let index = this.taps.length
+      for (let i = 0; i < before.length; i++) {
+        let tapIndex = this.taps.findIndex(v => v.name === before[i])
+        if (tapIndex > -1 && tapIndex < index) {
+          index = tapIndex
+        }
+      }
+      if (index === this.taps.length) {
+        index = 0
+      }
+      this.taps.splice(index, 0, tapInfo)
+    } else {
+      this.taps.push(tapInfo)
     }
   }
 

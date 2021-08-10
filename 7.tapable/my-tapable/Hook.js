@@ -75,32 +75,66 @@ class Hook {
     return tapInfo
   }
 
-  _insert(tapInfo) {
-    console.log(tapInfo)
+  _insert(item) {
     this._resetCompilation()
-    let stage = tapInfo.stage
-    let before = tapInfo.before
-    if (typeof stage === 'number') {
-      let index = this.taps.findIndex(v => v.stage > stage)
-      if (index === -1) {
-        index = this.taps.length
-      }
-      this.taps.splice(index, 0, tapInfo)
-    } else if (Array.isArray(before)) {
-      let index = this.taps.length
-      for (let i = 0; i < before.length; i++) {
-        let tapIndex = this.taps.findIndex(v => v.name === before[i])
-        if (tapIndex > -1 && tapIndex < index) {
-          index = tapIndex
+    // let stage = tapInfo.stage
+    // let before = tapInfo.before
+    // if (typeof stage === 'number') {
+    //   let index = this.taps.findIndex(v => v.stage > stage)
+    //   if (index === -1) {
+    //     index = this.taps.length
+    //   }
+    //   this.taps.splice(index, 0, tapInfo)
+    // }
+    // if (Array.isArray(before)) {
+    //   let length = this.taps.length
+    //   let index = length
+    //   for (let i = 0; i < before.length; i++) {
+    //     let tapIndex = this.taps.findIndex(v => v.name === before[i])
+    //     if (tapIndex === -1) {
+    //       index = 0
+    //       break
+    //     } else if (tapIndex < index) {
+    //       index = tapIndex
+    //     }
+    //   }
+    //   this.taps.splice(index, 0, tapInfo)
+    // } else {
+    //   this.taps.push(tapInfo)
+    // }
+
+    let before
+    if (typeof item.before === 'string') {
+      before = new Set([item.before])
+    } else if (Array.isArray(item.before)) {
+      before = new Set(item.before)
+    }
+    let stage = 0
+    if (typeof item.stage === 'number') {
+      stage = item.stage
+    }
+    let i = this.taps.length
+    while (i > 0) {
+      i--
+      const x = this.taps[i]
+      this.taps[i + 1] = x
+      const xStage = x.stage || 0
+      if (before) {
+        if (before.has(x.name)) {
+          before.delete(x.name)
+          continue
+        }
+        if (before.size > 0) {
+          continue
         }
       }
-      if (index === this.taps.length) {
-        index = 0
+      if (xStage > stage) {
+        continue
       }
-      this.taps.splice(index, 0, tapInfo)
-    } else {
-      this.taps.push(tapInfo)
+      i++
+      break
     }
+    this.taps[i] = item
   }
 
   // 重新编译执行函数

@@ -1,1 +1,2 @@
-console.log(123);
+import $ from 'jquery'
+console.log($('#root'));

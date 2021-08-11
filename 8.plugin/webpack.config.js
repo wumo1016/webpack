@@ -1,5 +1,6 @@
 const path = require('path')
 const DonePlugin = require('./plugins/DonePlugin')
+const AssetPlugin = require('./plugins/AssetPlugin')
 const resolve = paths => path.resolve(__dirname, paths)
 
 module.exports = {
@@ -10,5 +11,5 @@ module.exports = {
     path: resolve('dist'),
     filename: '[name].js',
   },
-  plugins: [new DonePlugin({ name: 'wyb' })],
+  plugins: [new DonePlugin({ name: 'wyb' }), new AssetPlugin({ name: 'wyb' })],
 }

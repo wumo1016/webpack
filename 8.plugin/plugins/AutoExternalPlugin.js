@@ -4,6 +4,7 @@
  */
 
 const { ExternalModule } = require('webpack')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 /**
  * 1.通过AST语法树检测当前项目的脚本中引入哪些模块 是否引入了 jquery
@@ -60,6 +61,27 @@ class AutoExternalPlugin {
         )
       }
     )
+    // 插入script脚本
+    compiler.hooks.compilation.tap('AutoExternalPlugin', compilation => {
+      HtmlWebpackPlugin.getHooks(compilation).alterAssetTags.tapAsync(
+        'AutoExternalPlugin',
+        (html, callback) => {
+          console.log(html)
+          let { assetTags } = html
+          Array.from(this.importedModules).map(key => {
+            assetTags.scripts.unshift({
+              tagName: 'script',
+              voidTag: false,
+              attributes: {
+                src: this.options[key],
+                defer: false,
+              },
+            })
+          })
+          callback(null, html)
+        }
+      )
+    })
   }
 }
 

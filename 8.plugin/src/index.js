@@ -1,2 +1,3 @@
-import $ from 'jquery'
-console.log($('#root'));
+// import $ from 'jquery'
+const $ = require('jquery')
+console.log($('#root'))

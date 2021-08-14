@@ -7,16 +7,16 @@ const bootstrap = resolve('node_modules/bootstrap/dist/css/bootstrap.min.css')
 const SMWP = require('speed-measure-webpack-plugin')
 const smwp = new SMWP()
 // 打包结果分析
-const {
-  BundleAnalyzerPlugin: WebpackBundleAnalyzer,
-} = require('webpack-bundle-analyzer')
+// const {
+//   BundleAnalyzerPlugin: WebpackBundleAnalyzer,
+// } = require('webpack-bundle-analyzer')
 
 module.exports = smwp.wrap({
   mode: 'development',
   devtool: false,
   entry: {
     main: './src/index.js',
-    vendor: ['lodash'],
+    // vendor: ['lodash'],
   },
   output: {
     path: resolve('dist'),
@@ -59,6 +59,6 @@ module.exports = smwp.wrap({
       resourceRegExp: /^\.\/locale/, // 引入模块路径的表达式
       contextRegExp: /moment$/, // 模块的名称或目录
     }),
-    new WebpackBundleAnalyzer(),
+    // new WebpackBundleAnalyzer(),
   ],
 })

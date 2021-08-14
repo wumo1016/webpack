@@ -2,10 +2,16 @@ const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const resolve = paths => path.resolve(__dirname, paths)
-
 const bootstrap = resolve('node_modules/bootstrap/dist/css/bootstrap.min.css')
+// 打包耗时分析
+const SMWP = require('speed-measure-webpack-plugin')
+const smwp = new SMWP()
+// 打包结果分析
+const {
+  BundleAnalyzerPlugin: WebpackBundleAnalyzer,
+} = require('webpack-bundle-analyzer')
 
-module.exports = {
+module.exports = smwp.wrap({
   mode: 'development',
   devtool: false,
   entry: {
@@ -53,5 +59,6 @@ module.exports = {
       resourceRegExp: /^\.\/locale/, // 引入模块路径的表达式
       contextRegExp: /moment$/, // 模块的名称或目录
     }),
+    new WebpackBundleAnalyzer(),
   ],
-}
+})

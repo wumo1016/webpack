@@ -1,5 +1,5 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require('path')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
@@ -10,7 +10,7 @@ const resolve = paths => path.resolve(__dirname, paths)
 module.exports = {
   mode: process.env.NODE_ENV === 'development' ? 'development' : 'production',
   entry: {
-    index: './src/index.js'
+    index: './src/index.js',
   },
   output: {
     path: resolve('dist'),
@@ -23,28 +23,21 @@ module.exports = {
     alias: {
       '@': resolve('./src'),
       '@ass': resolve('./src/assets'),
-    }
+    },
   },
   module: {
     rules: [
       {
         test: /\.txt$/,
-        loader: 'raw-loader'
+        loader: 'raw-loader',
       },
       {
         test: /\.css$/,
-        use: [
-          MiniCssExtractPlugin.loader,
-          'css-loader',
-        ]
+        use: [MiniCssExtractPlugin.loader, 'css-loader'],
       },
       {
         test: /\.(scss|sass)$/,
-        use: [
-          MiniCssExtractPlugin.loader,
-          'css-loader',
-          'sass-loader'
-        ]
+        use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
       },
       {
         test: /\.(jpg|png|jpeg|gif|svg)/,
@@ -55,14 +48,21 @@ module.exports = {
               esModule: false,
               name: '[name].[ext]',
               limit: 10 * 1024,
-              outputPath: 'static/images'
-            }
-          }
-        ]
+              outputPath: 'static/images',
+            },
+          },
+        ],
       },
       {
         test: /\.jsx?$/,
         use: [
+          // {
+          //   // 并不一定提高速度 如果项目较大 才适合开
+          //   loader: 'thread-loader',
+          //   options: {
+          //     worker: 3, // cpu核数减1
+          //   },
+          // },
           {
             loader: 'babel-loader',
             options: {
@@ -70,24 +70,24 @@ module.exports = {
                 [
                   '@babel/preset-env',
                   {
-                    targets: '>0.25%, not dead'
-                  }
-                ]
+                    targets: '>0.25%, not dead',
+                  },
+                ],
               ],
               plugins: [
                 ['@babel/plugin-proposal-decorators', { legacy: true }],
                 ['@babel/plugin-proposal-class-properties', { loose: true }],
                 ['@babel/plugin-proposal-private-methods', { loose: true }],
-              ]
+              ],
             },
-          }
-        ]
+          },
+        ],
       },
       {
         test: /\.jsx?$/,
         loader: 'eslint-loader',
         enforce: 'pre',
-        exclude: /node_modules/
+        exclude: /node_modules/,
       },
     ],
   },
@@ -99,15 +99,15 @@ module.exports = {
       patterns: [
         {
           from: resolve('./public/static'),
-          to: resolve('./dist/static')
-        }
-      ]
+          to: resolve('./dist/static'),
+        },
+      ],
     }),
     new CleanWebpackPlugin({
-      cleanOnceBeforeBuildPatterns: ['**/*']
+      cleanOnceBeforeBuildPatterns: ['**/*'],
     }),
     new MiniCssExtractPlugin({
-      filename: 'static/css/[hash:10].css'
-    })
+      filename: 'static/css/[hash:10].css',
+    }),
   ],
-};
+}

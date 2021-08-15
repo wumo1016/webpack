@@ -16,8 +16,16 @@
 // console.log(moment().format('dddd'))
 
 // 测试打包输出
-module.exports = {
-  add(a, b) {
-    return a + b
-  },
+// module.exports = {
+//   add(a, b) {
+//     return a + b
+//   },
+// }
+
+// 测试tree-shaking
+import { func1 } from './func'
+console.log(123)
+
+if (false) {
+  console.log(12345)
 }

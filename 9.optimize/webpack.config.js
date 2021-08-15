@@ -12,7 +12,7 @@ const smwp = new SMWP()
 // } = require('webpack-bundle-analyzer')
 
 module.exports = smwp.wrap({
-  mode: 'development',
+  mode: 'production',
   devtool: false,
   entry: {
     main: './src/index.js',

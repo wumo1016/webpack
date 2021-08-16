@@ -22,6 +22,35 @@ module.exports = smwp.wrap({
     path: resolve('dist'),
     filename: '[name].js',
   },
+  optimization: {
+    splitChunks: {
+      // 同步就是 使用import直接导入资源
+      // 异步就是 比如点击按钮才使用import加载资源
+      chunks: 'all', // 代码分割应用于哪些情况 initial(同步)/async(异步)/all(所有)
+      minSize: 0, // 分割的最小大小 默认是30k
+      minChunks: 2, // 一个模块最小被引用的次数才分割
+      // name: true, // 打包后的名称 默认规则是 引用名称~chunk 可选值 false/string/function
+      automaticNameDelimiter: '~', // 分割符 引用于name
+      maxAsyncRequests: 3,
+      maxInitialRequests: 5,
+      cacheGroups: {
+        // 设置缓存组来 满足不同规则的chunk 会覆盖上面的默认配置
+        // 有些模块 会同时属于多个缓存组 越大权重越大
+        // 为什么设置为负数: 因为默认缓存组的权重是 0
+        vendors: {
+          chunks: 'all',
+          test: /node_modules/, // 如果request的路径包含node_modules
+          priority: -10, // 权重
+        },
+        default: {
+          chunks: 'all',
+          minSize: 0,
+          minChunks: 2,
+          priority: -20,
+        },
+      },
+    },
+  },
   resolve: {
     // 可以不添加后缀 按照这个顺序查找
     extensions: ['.js', '.json'],

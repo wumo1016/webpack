@@ -18,6 +18,10 @@ module.exports = smwp.wrap({
     main: './src/index.js',
     // vendor: ['lodash'],
   },
+  cache: {
+    type: 'filesystem', // memory filesystem
+    cacheDirectory: path.resolve(__dirname, 'node_modules/.cache/webpack'),
+  },
   output: {
     path: resolve('dist'),
     filename: '[name].js',

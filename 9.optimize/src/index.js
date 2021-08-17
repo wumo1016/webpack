@@ -23,9 +23,12 @@
 // }
 
 // 测试tree-shaking
-import { func1 } from './func'
-console.log(123)
+// import { func1 } from './func'
+// console.log(123)
 
-if (false) {
-  console.log(12345)
-}
+// if (false) {
+//   console.log(12345)
+// }
+
+import moment from 'moment'
+console.log(moment)

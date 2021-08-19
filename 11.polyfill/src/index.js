@@ -1,0 +1,11 @@
+import '@babel/polyfill'
+
+// const add = () => {
+//   console.log(123)
+// }
+// console.log(add);
+
+const p = new Promise(() => {
+  console.log(123)
+})
+console.log(p)

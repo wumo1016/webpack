@@ -18,7 +18,9 @@ module.exports = {
                   '@babel/preset-env',
                   {
                     // useBuiltIns: false, // 全量打包 @babel/polyfill
-                    useBuiltIns: 'entry' // 只会引入浏览器不兼容的 polyfillS
+                    // useBuiltIns: 'entry', // 只会引入浏览器不兼容的 polyfill
+                    useBuiltIns: 'usage', // 只会引入浏览器不兼容的 polyfill
+                    corejs: 3
                   }
                 ]
               ]

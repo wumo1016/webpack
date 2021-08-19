@@ -15,12 +15,20 @@ module.exports = {
             options: {
               presets: [
                 [
-                  '@babel/preset-env',
+                  '@babel/preset-env'
+                  // {
+                  //   // useBuiltIns: false, // 全量打包 @babel/polyfill
+                  //   // useBuiltIns: 'entry', // 只会引入浏览器不兼容的 polyfill
+                  //   useBuiltIns: 'usage', // 只会引入浏览器不兼容的 polyfill
+                  //   corejs: 3
+                  // }
+                ]
+              ],
+              plugins: [
+                [
+                  '@babel/plugin-transform-runtime',
                   {
-                    // useBuiltIns: false, // 全量打包 @babel/polyfill
-                    // useBuiltIns: 'entry', // 只会引入浏览器不兼容的 polyfill
-                    useBuiltIns: 'usage', // 只会引入浏览器不兼容的 polyfill
-                    corejs: 3
+                    corejs: 3 // 当代码中使用 ES对象或方法的时候 会自动引入 babel-runtime/core-js
                   }
                 ]
               ]

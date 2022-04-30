@@ -9,6 +9,6 @@
 // console.log(add);
 
 const p = new Promise(() => {
-  console.log(123)
+  console.log(12345)
 })
 console.log(p)
